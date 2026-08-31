@@ -1,580 +1,1003 @@
 ```javascript
-document.addEventListener("DOMContentLoaded", () => {
-
-    /* =====================================================
-       SETTINGS
-    ===================================================== */
-
-    const PASSWORD = "JoashManicum";
-    const TOTAL_PAGES = 10;
-    const TOTAL_SHEETS = Math.ceil(TOTAL_PAGES / 2);
+/* =====================================================
+   OUR STORY
+   COMPLETE BOOK ENGINE
+===================================================== */
 
 
-    /* =====================================================
-       GET ELEMENTS
-    ===================================================== */
+/* =====================================================
+   SETTINGS
+===================================================== */
 
-    const closedBook = document.getElementById("closedBook");
-    const cover = document.getElementById("cover");
+const PASSWORD = "JoashManicum";
 
-    const passwordScene =
-        document.getElementById("passwordScene");
+const TOTAL_PAGES = 10;
 
-    const scrapbookScene =
-        document.getElementById("scrapbookScene");
-
-    const passwordInput =
-        document.getElementById("passwordInput");
-
-    const unlockButton =
-        document.getElementById("unlockButton");
-
-    const passwordError =
-        document.getElementById("passwordError");
-
-    const pagesContainer =
-        document.getElementById("pages");
-
-    const leftStack =
-        document.getElementById("leftStack");
-
-    const rightStack =
-        document.getElementById("rightStack");
-
-    const previousButton =
-        document.getElementById("previousButton");
-
-    const nextButton =
-        document.getElementById("nextButton");
-
-    const pageCounter =
-        document.getElementById("pageCounter");
+const TOTAL_SHEETS = Math.ceil(TOTAL_PAGES / 2);
 
 
-    /* =====================================================
-       BOOK STATE
-    ===================================================== */
+/* =====================================================
+   ELEMENTS
+===================================================== */
 
-    let unlocked = false;
-    let currentSheet = 0;
-    let turning = false;
+const closedBook =
+    document.getElementById("closedBook");
 
+const cover =
+    document.getElementById("cover");
 
-    /* =====================================================
-       OPEN GREEN COVER
-    ===================================================== */
+const passwordScene =
+    document.getElementById("passwordScene");
 
-    cover.addEventListener("click", () => {
+const scrapbookScene =
+    document.getElementById("scrapbookScene");
 
-        if (cover.classList.contains("opening")) {
-            return;
-        }
+const passwordInput =
+    document.getElementById("passwordInput");
 
-        cover.classList.add("opening");
+const unlockButton =
+    document.getElementById("unlockButton");
 
-        setTimeout(() => {
+const passwordError =
+    document.getElementById("passwordError");
 
-            closedBook.classList.add("hidden");
+const pagesContainer =
+    document.getElementById("pages");
 
-            passwordScene.classList.remove("hidden");
+const leftStack =
+    document.getElementById("leftStack");
 
-            setTimeout(() => {
+const rightStack =
+    document.getElementById("rightStack");
 
-                passwordInput.focus();
+const previousButton =
+    document.getElementById("previousButton");
 
-            }, 500);
+const nextButton =
+    document.getElementById("nextButton");
 
-        }, 1100);
-
-    });
-
-
-    /* =====================================================
-       PASSWORD
-    ===================================================== */
-
-    unlockButton.addEventListener("click", unlockBook);
-
-    passwordInput.addEventListener("keydown", (event) => {
-
-        if (event.key === "Enter") {
-            unlockBook();
-        }
-
-    });
+const pageCounter =
+    document.getElementById("pageCounter");
 
 
-    function unlockBook() {
+/* =====================================================
+   STATE
+===================================================== */
 
-        if (passwordInput.value !== PASSWORD) {
+let unlocked = false;
 
-            passwordError.classList.remove("show");
+let currentSheet = 0;
 
-            void passwordError.offsetWidth;
-
-            passwordError.classList.add("show");
-
-            passwordInput.value = "";
-
-            passwordInput.focus();
-
-            return;
-        }
+let turning = false;
 
 
-        unlocked = true;
+/* =====================================================
+   OPEN THE GREEN COVER
+===================================================== */
 
-        passwordScene.classList.add("hidden");
+if (cover) {
 
-        buildBook();
+    cover.addEventListener(
+        "click",
+        openCover
+    );
 
-        setTimeout(() => {
+}
 
-            scrapbookScene.classList.remove("hidden");
 
-            updateNavigation();
+function openCover() {
 
-        }, 500);
+    /*
+        Prevent double-clicking the cover
+        while it is opening.
+    */
+
+    if (
+        cover.classList.contains("opening")
+    ) {
+
+        return;
 
     }
 
 
-    /* =====================================================
-       BUILD THE SCRAPBOOK
-    ===================================================== */
-
-    function buildBook() {
-
-        pagesContainer.innerHTML = "";
-
-        currentSheet = 0;
+    cover.classList.add("opening");
 
 
-        for (
-            let i = 0;
-            i < TOTAL_SHEETS;
-            i++
-        ) {
+    /*
+        Wait until the cover has physically
+        started opening before hiding it.
+    */
 
-            pagesContainer.appendChild(
-                createSheet(i)
+    setTimeout(() => {
+
+        closedBook.classList.add("hidden");
+
+        passwordScene.classList.remove("hidden");
+
+
+        /*
+            Focus the password box after
+            the password spread appears.
+        */
+
+        setTimeout(() => {
+
+            if (passwordInput) {
+
+                passwordInput.focus();
+
+            }
+
+        }, 600);
+
+    }, 1100);
+
+}
+
+
+/* =====================================================
+   PASSWORD BUTTON
+===================================================== */
+
+if (unlockButton) {
+
+    unlockButton.addEventListener(
+        "click",
+        unlockBook
+    );
+
+}
+
+
+if (passwordInput) {
+
+    passwordInput.addEventListener(
+        "keydown",
+        function(event) {
+
+            if (event.key === "Enter") {
+
+                unlockBook();
+
+            }
+
+        }
+    );
+
+}
+
+
+function unlockBook() {
+
+    if (!passwordInput) {
+
+        return;
+
+    }
+
+
+    const enteredPassword =
+        passwordInput.value;
+
+
+    /*
+        WRONG PASSWORD
+    */
+
+    if (
+        enteredPassword !== PASSWORD
+    ) {
+
+        if (passwordError) {
+
+            passwordError.classList.remove(
+                "show"
+            );
+
+
+            /*
+                Restart the shake animation.
+            */
+
+            void passwordError.offsetWidth;
+
+
+            passwordError.classList.add(
+                "show"
             );
 
         }
 
 
-        updateSheetLayers();
+        passwordInput.value = "";
 
-        updateStacks();
+        passwordInput.focus();
+
+        return;
 
     }
 
 
-    /* =====================================================
-       CREATE ONE PHYSICAL SHEET
-    ===================================================== */
+    /*
+        CORRECT PASSWORD
+    */
 
-    function createSheet(sheetNumber) {
+    unlocked = true;
+
+
+    /*
+        Build the entire scrapbook
+        BEFORE displaying it.
+    */
+
+    buildBook();
+
+
+    /*
+        Hide the password scene.
+    */
+
+    passwordScene.classList.add(
+        "hidden"
+    );
+
+
+    /*
+        Give the password scene time
+        to disappear before showing
+        the scrapbook.
+    */
+
+    setTimeout(() => {
+
+        scrapbookScene.classList.remove(
+            "hidden"
+        );
+
+        currentSheet = 0;
+
+        updateBook();
+
+    }, 500);
+
+}
+
+
+/* =====================================================
+   BUILD ENTIRE SCRAPBOOK
+===================================================== */
+
+function buildBook() {
+
+    if (!pagesContainer) {
+
+        return;
+
+    }
+
+
+    pagesContainer.innerHTML = "";
+
+
+    /*
+        Create EVERY physical sheet.
+
+        Nothing gets created while
+        the user is turning pages.
+    */
+
+    for (
+        let sheetNumber = 0;
+        sheetNumber < TOTAL_SHEETS;
+        sheetNumber++
+    ) {
 
         const sheet =
-            document.createElement("div");
-
-        sheet.className = "page";
+            createSheet(sheetNumber);
 
 
-        const frontNumber =
-            sheetNumber * 2 + 1;
+        pagesContainer.appendChild(
+            sheet
+        );
 
-        const backNumber =
-            sheetNumber * 2 + 2;
-
-
-        const front =
-            document.createElement("div");
-
-        front.className =
-            "page-face page-front";
-
-        front.innerHTML =
-            createPageContent(frontNumber);
+    }
 
 
-        const back =
-            document.createElement("div");
+    /*
+        Make sure every sheet begins
+        on the right side.
+    */
 
-        back.className =
-            "page-face page-back";
+    const sheets =
+        pagesContainer.querySelectorAll(
+            ".page"
+        );
 
-        if (backNumber <= TOTAL_PAGES) {
 
-            back.innerHTML =
-                createPageContent(backNumber);
+    sheets.forEach(
+        (sheet, index) => {
+
+            sheet.classList.remove(
+                "flipped"
+            );
+
+
+            sheet.style.setProperty(
+                "--page-z",
+                TOTAL_SHEETS - index
+            );
 
         }
+    );
 
 
-        sheet.appendChild(front);
-        sheet.appendChild(back);
+    currentSheet = 0;
+
+}
 
 
-        return sheet;
+/* =====================================================
+   CREATE PHYSICAL SHEET
+===================================================== */
+
+function createSheet(sheetNumber) {
+
+    const sheet =
+        document.createElement("div");
+
+
+    sheet.className = "page";
+
+
+    /*
+        The first sheet must be on top.
+
+        Later sheets sit underneath it.
+    */
+
+    sheet.style.setProperty(
+        "--page-z",
+        TOTAL_SHEETS - sheetNumber
+    );
+
+
+    const frontNumber =
+        sheetNumber * 2 + 1;
+
+
+    const backNumber =
+        sheetNumber * 2 + 2;
+
+
+    /*
+        FRONT
+        Example:
+
+        sheet 0 = page 1
+        sheet 1 = page 3
+        sheet 2 = page 5
+    */
+
+    const front =
+        document.createElement("div");
+
+
+    front.className =
+        "page-face page-front";
+
+
+    front.innerHTML =
+        createPageContent(
+            frontNumber
+        );
+
+
+    /*
+        BACK
+        Example:
+
+        sheet 0 = page 2
+        sheet 1 = page 4
+        sheet 2 = page 6
+    */
+
+    const back =
+        document.createElement("div");
+
+
+    back.className =
+        "page-face page-back";
+
+
+    if (
+        backNumber <= TOTAL_PAGES
+    ) {
+
+        back.innerHTML =
+            createPageContent(
+                backNumber
+            );
 
     }
 
 
-    /* =====================================================
-       PAGE CONTENT
-    ===================================================== */
+    sheet.appendChild(front);
 
-    function createPageContent(pageNumber) {
-
-        const titles = [
-
-            "Our Beginning",
-            "The Little Things",
-            "Favourite Memories",
-            "Adventures Together",
-            "Just Us",
-            "The Moments I Keep",
-            "Through It All",
-            "My Favourite Person",
-            "You & Me",
-            "Forever & Always"
-
-        ];
+    sheet.appendChild(back);
 
 
-        const title =
-            titles[pageNumber - 1] || "Our Story";
+    return sheet;
+
+}
 
 
-        return `
+/* =====================================================
+   PAGE CONTENT
+===================================================== */
 
-            <div class="scrap-content">
+function createPageContent(pageNumber) {
 
-                <div class="floral floral-tl">
-                    ❦
-                </div>
+    const pageTitles = [
 
-                <div class="floral floral-tr">
-                    ❦
-                </div>
+        "Our Beginning",
 
-                <div class="floral floral-bl">
-                    ❦
-                </div>
+        "The Little Things",
 
-                <div class="floral floral-br">
-                    ❦
-                </div>
+        "Favourite Memories",
 
-                <div class="eyebrow">
-                    A memory to keep
-                </div>
+        "Adventures Together",
 
-                <h3>
-                    ${title}
-                </h3>
+        "Just Us",
 
-                <div class="divider">
-                    ❧ ❦ ❧
-                </div>
+        "The Moments I Keep",
 
-                <div class="photo-placeholder">
-                    PHOTO ${pageNumber}
-                </div>
+        "Through It All",
 
-                <div class="scrap-date">
-                    Your date goes here
-                </div>
+        "My Favourite Person",
 
-                <p class="scrap-text">
-                    Your photograph, memories and
-                    personal message will live here.
-                </p>
+        "You & Me",
 
-                <div class="page-number">
-                    ${String(pageNumber).padStart(2, "0")}
-                </div>
+        "Forever & Always"
 
+    ];
+
+
+    const title =
+        pageTitles[pageNumber - 1]
+        || "Our Story";
+
+
+    return `
+
+        <div class="scrap-content">
+
+
+            <div class="floral floral-tl">
+                ❦
             </div>
 
-        `;
 
-    }
-
-
-    /* =====================================================
-       SHEET LAYERS
-    ===================================================== */
-
-    function updateSheetLayers() {
-
-        const sheets =
-            pagesContainer.querySelectorAll(".page");
+            <div class="floral floral-tr">
+                ❦
+            </div>
 
 
-        sheets.forEach((sheet, index) => {
-
-            if (index < currentSheet) {
-
-                sheet.style.zIndex =
-                    10 + index;
-
-            } else {
-
-                sheet.style.zIndex =
-                    100 + (TOTAL_SHEETS - index);
-
-            }
-
-        });
-
-    }
+            <div class="floral floral-bl">
+                ❦
+            </div>
 
 
-    /* =====================================================
-       NEXT
-    ===================================================== */
+            <div class="floral floral-br">
+                ❦
+            </div>
+
+
+            <div class="eyebrow">
+                A memory to keep
+            </div>
+
+
+            <h3>
+                ${title}
+            </h3>
+
+
+            <div class="divider">
+                ❧ ❦ ❧
+            </div>
+
+
+            <div class="photo-placeholder">
+                PHOTO ${pageNumber}
+            </div>
+
+
+            <div class="scrap-date">
+                Your date goes here
+            </div>
+
+
+            <p class="scrap-text">
+                Your photograph, memories and
+                personal message will live here.
+            </p>
+
+
+            <div class="page-number">
+                ${String(pageNumber).padStart(2, "0")}
+            </div>
+
+
+        </div>
+
+    `;
+
+}
+
+
+/* =====================================================
+   NEXT PAGE
+===================================================== */
+
+if (nextButton) {
 
     nextButton.addEventListener(
         "click",
         nextSpread
     );
 
-
-    function nextSpread() {
-
-        if (!unlocked || turning) {
-            return;
-        }
+}
 
 
-        if (
-            currentSheet >=
-            TOTAL_SHEETS - 1
-        ) {
-            return;
-        }
+function nextSpread() {
 
+    if (
+        !unlocked ||
+        turning
+    ) {
 
-        turning = true;
-
-
-        const sheets =
-            pagesContainer.querySelectorAll(".page");
-
-
-        const sheet =
-            sheets[currentSheet];
-
-
-        sheet.style.zIndex = 1000;
-
-        sheet.classList.add("flipped");
-
-
-        currentSheet++;
-
-
-        setTimeout(() => {
-
-            updateSheetLayers();
-            updateStacks();
-            updateNavigation();
-
-        }, 650);
-
-
-        setTimeout(() => {
-
-            turning = false;
-
-        }, 1300);
+        return;
 
     }
 
 
-    /* =====================================================
-       PREVIOUS
-    ===================================================== */
+    /*
+        Already at the final sheet.
+    */
+
+    if (
+        currentSheet >=
+        TOTAL_SHEETS - 1
+    ) {
+
+        return;
+
+    }
+
+
+    turning = true;
+
+
+    const sheets =
+        pagesContainer.querySelectorAll(
+            ".page"
+        );
+
+
+    /*
+        Flip the CURRENT physical sheet.
+
+        Sheet 0:
+            1 → 2
+
+        Sheet 1:
+            3 → 4
+
+        Sheet 2:
+            5 → 6
+
+        etc.
+    */
+
+    const sheet =
+        sheets[currentSheet];
+
+
+    if (sheet) {
+
+        sheet.classList.add(
+            "flipped"
+        );
+
+    }
+
+
+    /*
+        Move to the next physical sheet.
+
+        This is the important part.
+
+        After sheet 0 flips:
+
+            LEFT  = 2
+            RIGHT = 3
+
+        After sheet 1 flips:
+
+            LEFT  = 4
+            RIGHT = 5
+    */
+
+    currentSheet++;
+
+
+    updateBook();
+
+
+    setTimeout(() => {
+
+        turning = false;
+
+    }, 1300);
+
+}
+
+
+/* =====================================================
+   PREVIOUS PAGE
+===================================================== */
+
+if (previousButton) {
 
     previousButton.addEventListener(
         "click",
         previousSpread
     );
 
-
-    function previousSpread() {
-
-        if (!unlocked || turning) {
-            return;
-        }
+}
 
 
-        if (currentSheet <= 0) {
-            return;
-        }
+function previousSpread() {
 
-
-        turning = true;
-
-
-        currentSheet--;
-
-
-        const sheets =
-            pagesContainer.querySelectorAll(".page");
-
-
-        const sheet =
-            sheets[currentSheet];
-
-
-        sheet.style.zIndex = 1000;
-
-        sheet.classList.remove("flipped");
-
-
-        setTimeout(() => {
-
-            updateSheetLayers();
-            updateStacks();
-            updateNavigation();
-
-        }, 650);
-
-
-        setTimeout(() => {
-
-            turning = false;
-
-        }, 1300);
-
-    }
-
-
-    /* =====================================================
-       STACKS
-    ===================================================== */
-
-    function updateStacks() {
-
-        const leftPages =
-            currentSheet * 2;
-
-        const rightPages =
-            TOTAL_SHEETS -
-            currentSheet -
-            1;
-
-
-        updateStack(
-            leftStack,
-            leftPages,
-            "left"
-        );
-
-        updateStack(
-            rightStack,
-            rightPages,
-            "right"
-        );
-
-    }
-
-
-    function updateStack(
-        stack,
-        pageCount,
-        side
+    if (
+        !unlocked ||
+        turning
     ) {
 
-        const thickness =
-            Math.max(
-                3,
-                Math.min(
-                    pageCount * 1.5,
-                    18
-                )
-            );
-
-
-        stack.style.width =
-            thickness + "px";
-
-
-        if (side === "left") {
-
-            stack.style.left =
-                -thickness + "px";
-
-        } else {
-
-            stack.style.right =
-                -thickness + "px";
-
-        }
+        return;
 
     }
 
 
-    /* =====================================================
-       NAVIGATION
-    ===================================================== */
+    /*
+        Already at the beginning.
+    */
 
-    function updateNavigation() {
+    if (
+        currentSheet <= 0
+    ) {
 
-        previousButton.disabled =
-            currentSheet <= 0;
-
-
-        nextButton.disabled =
-            currentSheet >=
-            TOTAL_SHEETS - 1;
-
-
-        const firstPage =
-            currentSheet * 2 + 1;
-
-        const secondPage =
-            Math.min(
-                currentSheet * 2 + 2,
-                TOTAL_PAGES
-            );
-
-
-        pageCounter.textContent =
-            `${firstPage}–${secondPage} / ${TOTAL_PAGES}`;
+        return;
 
     }
 
 
-    /* =====================================================
-       KEYBOARD
-    ===================================================== */
-
-    document.addEventListener(
-        "keydown",
-        (event) => {
-
-            if (!unlocked) {
-                return;
-            }
+    turning = true;
 
 
-            if (event.key === "ArrowRight") {
-                nextSpread();
-            }
+    /*
+        Move BACK to the physical sheet
+        that was previously turned.
+    */
+
+    currentSheet--;
 
 
-            if (event.key === "ArrowLeft") {
-                previousSpread();
+    const sheets =
+        pagesContainer.querySelectorAll(
+            ".page"
+        );
+
+
+    const sheet =
+        sheets[currentSheet];
+
+
+    /*
+        Rotate that SAME physical sheet
+        back to the right.
+    */
+
+    if (sheet) {
+
+        sheet.classList.remove(
+            "flipped"
+        );
+
+    }
+
+
+    updateBook();
+
+
+    setTimeout(() => {
+
+        turning = false;
+
+    }, 1300);
+
+}
+
+
+/* =====================================================
+   UPDATE EVERYTHING
+===================================================== */
+
+function updateBook() {
+
+    updateStacks();
+
+    updateNavigation();
+
+    updateSheetLayers();
+
+}
+
+
+/* =====================================================
+   UPDATE SHEET LAYERS
+===================================================== */
+
+function updateSheetLayers() {
+
+    const sheets =
+        pagesContainer.querySelectorAll(
+            ".page"
+        );
+
+
+    sheets.forEach(
+        (sheet, index) => {
+
+            /*
+                Flipped sheets must remain
+                visually above the sheets
+                underneath them.
+
+                This prevents the pages
+                from appearing merged.
+            */
+
+            if (
+                index < currentSheet
+            ) {
+
+                sheet.style.zIndex =
+                    100 + index;
+
+            } else {
+
+                sheet.style.zIndex =
+                    TOTAL_SHEETS - index;
+
             }
 
         }
     );
 
-});
-```
+}
 
+
+/* =====================================================
+   UPDATE STACKS
+===================================================== */
+
+function updateStacks() {
+
+    if (
+        !leftStack ||
+        !rightStack
+    ) {
+
+        return;
+
+    }
+
+
+    /*
+        Every completed sheet contributes
+        to the left stack.
+    */
+
+    const turnedSheets =
+        currentSheet;
+
+
+    /*
+        Remaining sheets stay on the right.
+    */
+
+    const remainingSheets =
+        TOTAL_SHEETS -
+        currentSheet -
+        1;
+
+
+    const leftThickness =
+        Math.min(
+            Math.max(
+                turnedSheets * 3,
+                3
+            ),
+            22
+        );
+
+
+    const rightThickness =
+        Math.min(
+            Math.max(
+                remainingSheets * 3,
+                3
+            ),
+            22
+        );
+
+
+    /*
+        LEFT STACK
+    */
+
+    leftStack.style.width =
+        `${leftThickness}px`;
+
+
+    leftStack.style.left =
+        `${-leftThickness}px`;
+
+
+    /*
+        RIGHT STACK
+    */
+
+    rightStack.style.width =
+        `${rightThickness}px`;
+
+
+    rightStack.style.right =
+        `${-rightThickness}px`;
+
+}
+
+
+/* =====================================================
+   PAGE COUNTER
+===================================================== */
+
+function updateNavigation() {
+
+    if (
+        !pageCounter
+    ) {
+
+        return;
+
+    }
+
+
+    /*
+        At sheet 0:
+
+            1–2 / 10
+
+        At sheet 1:
+
+            3–4 / 10
+
+        At sheet 2:
+
+            5–6 / 10
+    */
+
+    const leftPage =
+        currentSheet * 2 + 1;
+
+
+    const rightPage =
+        Math.min(
+            currentSheet * 2 + 2,
+            TOTAL_PAGES
+        );
+
+
+    pageCounter.textContent =
+        `${leftPage}–${rightPage} / ${TOTAL_PAGES}`;
+
+
+    if (previousButton) {
+
+        previousButton.disabled =
+            currentSheet <= 0;
+
+    }
+
+
+    if (nextButton) {
+
+        nextButton.disabled =
+            currentSheet >=
+            TOTAL_SHEETS - 1;
+
+    }
+
+}
+
+
+/* =====================================================
+   KEYBOARD CONTROLS
+===================================================== */
+
+document.addEventListener(
+    "keydown",
+    function(event) {
+
+        /*
+            Don't turn pages while typing
+            the password.
+        */
+
+        if (
+            event.target.tagName ===
+            "INPUT"
+        ) {
+
+            return;
+
+        }
+
+
+        if (!unlocked) {
+
+            return;
+
+        }
+
+
+        if (
+            event.key === "ArrowRight"
+        ) {
+
+            nextSpread();
+
+        }
+
+
+        if (
+            event.key === "ArrowLeft"
+        ) {
+
+            previousSpread();
+
+        }
+
+    }
+);
+
+
+/* =====================================================
+   INITIAL STATE
+===================================================== */
+
+if (previousButton) {
+
+    previousButton.disabled = true;
+
+}
+
+
+if (nextButton) {
+
+    nextButton.disabled = true;
+
+}
+```
