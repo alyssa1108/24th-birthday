@@ -1,22 +1,48 @@
-/* =========================================
-   MEMORY BOOK
-   MAIN BOOK ENGINE
-========================================= */
+/* =====================================================
+   OUR STORY
+   REAL PAGE-STACK BOOK ENGINE
+===================================================== */
 
 
-// ==========================================
-// ELEMENTS
-// ==========================================
+/* =====================================================
+   SETTINGS
+===================================================== */
+
+const PASSWORD = "JoashManicum";
+
+/*
+    Number of scrapbook sheets.
+
+    Each sheet has TWO sides:
+
+    Sheet 1:
+        front = page 1
+        back  = page 2
+
+    Sheet 2:
+        front = page 3
+        back  = page 4
+
+    etc.
+
+    We currently have 10 visible scrapbook pages.
+    We can change this later when we add your photos.
+*/
+
+const TOTAL_PAGES = 10;
+
+
+/* =====================================================
+   ELEMENTS
+===================================================== */
 
 const closedBook = document.getElementById("closedBook");
 
-const openBookButton = document.getElementById("openBookButton");
+const cover = document.getElementById("cover");
 
-const bookScene = document.getElementById("bookScene");
+const passwordScene = document.getElementById("passwordScene");
 
-const passwordPage = document.getElementById("passwordPage");
-
-const scrapbookContent = document.getElementById("scrapbookContent");
+const scrapbookScene = document.getElementById("scrapbookScene");
 
 const passwordInput = document.getElementById("passwordInput");
 
@@ -24,58 +50,79 @@ const unlockButton = document.getElementById("unlockButton");
 
 const passwordError = document.getElementById("passwordError");
 
-const nextButton = document.getElementById("nextButton");
+const pagesContainer = document.getElementById("pages");
+
+const leftStack = document.getElementById("leftStack");
+
+const rightStack = document.getElementById("rightStack");
 
 const previousButton = document.getElementById("previousButton");
 
+const nextButton = document.getElementById("nextButton");
+
 const pageCounter = document.getElementById("pageCounter");
 
-const flipContainer = document.getElementById("flipContainer");
 
-
-// ==========================================
-// PASSWORD
-// ==========================================
-
-const CORRECT_PASSWORD = "JoashManicum";
+/* =====================================================
+   BOOK STATE
+===================================================== */
 
 let unlocked = false;
 
+let currentSheet = 0;
 
-// ==========================================
-// PAGE SYSTEM
-// ==========================================
-
-let currentPage = 0;
-
-const totalPages = 10;
-
-let isAnimating = false;
+let turning = false;
 
 
-// ==========================================
-// OPEN THE BOOK
-// ==========================================
+/*
+    currentSheet tells us which SPREAD we are viewing.
 
-openBookButton.addEventListener("click", openBook);
+    0 = first spread
+    1 = second spread
+    2 = third spread
+    etc.
+*/
 
 
-function openBook() {
+const TOTAL_SHEETS = Math.ceil(TOTAL_PAGES / 2);
 
-    if (openBookButton.classList.contains("opening")) {
+
+/* =====================================================
+   OPEN COVER
+===================================================== */
+
+cover.addEventListener("click", openCover);
+
+
+function openCover() {
+
+    if (cover.classList.contains("opening")) {
         return;
     }
 
-    openBookButton.classList.add("opening");
+    cover.classList.add("opening");
+
+
+    /*
+        Wait for the physical cover animation.
+    */
 
     setTimeout(() => {
 
         closedBook.classList.add("hidden");
 
-        bookScene.classList.remove("hidden");
+        passwordScene.classList.remove("hidden");
+
+
+        /*
+            Let the password scene appear first,
+            THEN focus the input.
+        */
 
         setTimeout(() => {
+
             passwordInput.focus();
+
         }, 700);
 
     }, 1100);
@@ -83,51 +130,43 @@ function openBook() {
 }
 
 
-// ==========================================
-// PASSWORD UNLOCK
-// ==========================================
+/* =====================================================
+   PASSWORD
+===================================================== */
 
-unlockButton.addEventListener("click", checkPassword);
+unlockButton.addEventListener(
+    "click",
+    unlockBook
+);
 
 
-passwordInput.addEventListener("keydown", function(event) {
+passwordInput.addEventListener(
+    "keydown",
+    function(event) {
 
-    if (event.key === "Enter") {
-        checkPassword();
+        if (event.key === "Enter") {
+
+            unlockBook();
+
+        }
+
     }
+);
 
-});
+
+function unlockBook() {
+
+    const entered = passwordInput.value;
 
 
-function checkPassword() {
-
-    const enteredPassword = passwordInput.value;
-
-    if (enteredPassword === CORRECT_PASSWORD) {
-
-        unlocked = true;
+    if (entered !== PASSWORD) {
 
         passwordError.classList.remove("show");
 
-        passwordPage.style.animation = "pageAppear .8s ease reverse";
+        /*
+            Restart CSS animation.
+        */
 
-        setTimeout(() => {
-
-            passwordPage.classList.add("hidden");
-
-            scrapbookContent.classList.remove("hidden");
-
-            currentPage = 1;
-
-            updateNavigation();
-
-        }, 500);
-
-    } else {
-
-        passwordError.classList.remove("show");
-
-        // Force animation to restart
         void passwordError.offsetWidth;
 
         passwordError.classList.add("show");
@@ -136,304 +175,247 @@ function checkPassword() {
 
         passwordInput.focus();
 
-    }
-
-}
-
-
-// ==========================================
-// NEXT PAGE
-// ==========================================
-
-nextButton.addEventListener("click", nextPage);
-
-
-function nextPage() {
-
-    if (!unlocked || isAnimating) {
         return;
     }
 
-    if (currentPage >= totalPages) {
-        return;
-    }
 
-    isAnimating = true;
+    /*
+        PASSWORD CORRECT
+    */
 
-    createFlipPage();
+    unlocked = true;
 
-    currentPage++;
 
-    updateNavigation();
+    /*
+        Completely remove the password spread
+        from the visual flow.
+
+        It will NEVER sit underneath
+        the scrapbook.
+    */
+
+    passwordScene.classList.add("hidden");
+
+
+    /*
+        Build the actual scrapbook BEFORE
+        showing it.
+    */
+
+    buildBook();
+
 
     setTimeout(() => {
 
-        isAnimating = false;
+        scrapbookScene.classList.remove("hidden");
 
-    }, 1300);
+        updateNavigation();
 
-}
-
-
-// ==========================================
-// PREVIOUS PAGE
-// ==========================================
-
-previousButton.addEventListener("click", previousPage);
-
-
-function previousPage() {
-
-    if (!unlocked || isAnimating) {
-        return;
-    }
-
-    if (currentPage <= 1) {
-        return;
-    }
-
-    isAnimating = true;
-
-    const pages = flipContainer.querySelectorAll(".flip-page");
-
-    const lastPage = pages[pages.length - 1];
-
-    if (lastPage) {
-
-        lastPage.classList.remove("flipped");
-
-        setTimeout(() => {
-
-            lastPage.remove();
-
-        }, 1250);
-
-    }
-
-    currentPage--;
-
-    updateNavigation();
-
-    setTimeout(() => {
-
-        isAnimating = false;
-
-    }, 1300);
+    }, 500);
 
 }
 
 
-// ==========================================
-// CREATE A PAGE THAT FLIPS
-// ==========================================
+/* =====================================================
+   BUILD THE ENTIRE BOOK
+===================================================== */
 
-function createFlipPage() {
+function buildBook() {
 
-    const flipPage = document.createElement("div");
-
-    flipPage.className = "flip-page";
+    pagesContainer.innerHTML = "";
 
 
-    // ======================================
-    // FRONT OF PAGE
-    // ======================================
+    /*
+        Create every physical sheet now.
+
+        We do NOT create pages during navigation.
+
+        This is what prevents the merging problem.
+    */
+
+    for (
+        let sheetNumber = 0;
+        sheetNumber < TOTAL_SHEETS;
+        sheetNumber++
+    ) {
+
+        const sheet = createSheet(sheetNumber);
+
+        pagesContainer.appendChild(sheet);
+
+    }
+
+
+    updateStacks();
+
+}
+
+
+/* =====================================================
+   CREATE ONE PHYSICAL SHEET
+===================================================== */
+
+function createSheet(sheetNumber) {
+
+    const page = document.createElement("div");
+
+    page.className = "page";
+
+    /*
+        Higher pages sit above lower pages.
+    */
+
+    page.style.setProperty(
+        "--page-z",
+        TOTAL_SHEETS - sheetNumber
+    );
+
+
+    /*
+        Page numbers.
+
+        Sheet 0:
+            front = 1
+            back = 2
+
+        Sheet 1:
+            front = 3
+            back = 4
+
+        etc.
+    */
+
+    const frontNumber =
+        sheetNumber * 2 + 1;
+
+    const backNumber =
+        sheetNumber * 2 + 2;
+
 
     const front = document.createElement("div");
 
-    front.className = "flip-front";
-
-    front.innerHTML = createPageDesign(
-        currentPage
-    );
+    front.className =
+        "page-face page-front";
 
 
-    // ======================================
-    // BACK OF PAGE
-    // ======================================
+    front.innerHTML =
+        createPageContent(frontNumber);
+
 
     const back = document.createElement("div");
 
-    back.className = "flip-back";
-
-    back.innerHTML = createPageDesign(
-        currentPage + 1
-    );
+    back.className =
+        "page-face page-back";
 
 
-    flipPage.appendChild(front);
+    /*
+        Don't create a fake page beyond TOTAL_PAGES.
+    */
 
-    flipPage.appendChild(back);
+    if (backNumber <= TOTAL_PAGES) {
 
-    flipContainer.appendChild(flipPage);
+        back.innerHTML =
+            createPageContent(backNumber);
+
+    }
 
 
-    // Allow browser to render before animation
-    requestAnimationFrame(() => {
+    page.appendChild(front);
 
-        requestAnimationFrame(() => {
+    page.appendChild(back);
 
-            flipPage.classList.add("flipped");
 
-        });
-
-    });
+    return page;
 
 }
 
 
-// ==========================================
-// PLACEHOLDER PAGE DESIGN
-// ==========================================
+/* =====================================================
+   PAGE DESIGN
+===================================================== */
 
-function createPageDesign(pageNumber) {
+function createPageContent(pageNumber) {
+
+    const pageTitles = [
+        "Our Beginning",
+        "The Little Things",
+        "Favourite Memories",
+        "Adventures Together",
+        "Just Us",
+        "The Moments I Keep",
+        "Through It All",
+        "My Favourite Person",
+        "You & Me",
+        "Forever & Always"
+    ];
+
+
+    const title =
+        pageTitles[pageNumber - 1]
+        || "Our Story";
+
 
     return `
 
-        <div
-            style="
-                position:absolute;
-                inset:0;
-                padding:8%;
-                display:flex;
-                align-items:center;
-                justify-content:center;
-                flex-direction:column;
-                text-align:center;
-            "
-        >
+        <div class="scrap-content">
 
-            <div
-                style="
-                    position:absolute;
-                    top:18px;
-                    left:22px;
-                    color:#c9a24b;
-                    font-size:42px;
-                    transform:rotate(-25deg);
-                "
-            >
+            <div class="floral floral-tl">
                 ❦
             </div>
 
-            <div
-                style="
-                    position:absolute;
-                    top:18px;
-                    right:22px;
-                    color:#c9a24b;
-                    font-size:42px;
-                    transform:rotate(25deg);
-                "
-            >
+            <div class="floral floral-tr">
                 ❦
             </div>
 
-            <div
-                style="
-                    position:absolute;
-                    bottom:18px;
-                    left:22px;
-                    color:#c9a24b;
-                    font-size:42px;
-                    transform:rotate(-155deg);
-                "
-            >
+            <div class="floral floral-bl">
                 ❦
             </div>
 
-            <div
-                style="
-                    position:absolute;
-                    bottom:18px;
-                    right:22px;
-                    color:#c9a24b;
-                    font-size:42px;
-                    transform:rotate(155deg);
-                "
-            >
+            <div class="floral floral-br">
                 ❦
             </div>
 
 
-            <div
-                style="
-                    color:#85682e;
-                    letter-spacing:2px;
-                    font-size:16px;
-                    text-transform:uppercase;
-                    margin-bottom:10px;
-                "
-            >
+            <div class="eyebrow">
                 A memory to keep
             </div>
 
 
-            <div
-                style="
-                    font-family:'Great Vibes',cursive;
-                    font-size:48px;
-                    color:#49361f;
-                "
-            >
-                Our Memory
-            </div>
+            <h3>
+                ${title}
+            </h3>
 
 
-            <div
-                style="
-                    color:#c9a24b;
-                    font-size:22px;
-                    margin:12px 0;
-                    letter-spacing:5px;
-                "
-            >
+            <div class="divider">
                 ❧ ❦ ❧
             </div>
 
 
-            <div
-                style="
-                    width:210px;
-                    height:250px;
-                    background:linear-gradient(135deg,#d4c8ad,#eee5d0);
-                    border:10px solid #f7f1e3;
-                    box-shadow:0 8px 15px rgba(60,40,20,.25);
-                    display:flex;
-                    align-items:center;
-                    justify-content:center;
-                    transform:rotate(-2deg);
-                    color:#8e7d61;
-                    letter-spacing:2px;
-                    font-size:14px;
-                "
-            >
+            <div class="photo-placeholder">
+
                 PHOTO ${pageNumber}
+
             </div>
 
 
-            <div
-                style="
-                    margin-top:15px;
-                    color:#80652e;
-                    font-size:17px;
-                    font-style:italic;
-                "
-            >
+            <div class="scrap-date">
                 Your date goes here
             </div>
 
 
-            <p
-                style="
-                    margin-top:12px;
-                    max-width:320px;
-                    font-size:19px;
-                    line-height:1.5;
-                "
-            >
-                Your story, your photographs and
-                your memories will live on this page.
+            <p class="scrap-text">
+
+                Your photograph, memories and
+                personal message will live here.
+
             </p>
+
+
+            <div class="page-number">
+
+                ${String(pageNumber).padStart(2, "0")}
+
+            </div>
 
         </div>
 
@@ -442,37 +424,271 @@ function createPageDesign(pageNumber) {
 }
 
 
-// ==========================================
-// NAVIGATION
-// ==========================================
+/* =====================================================
+   NEXT
+===================================================== */
 
-function updateNavigation() {
+nextButton.addEventListener(
+    "click",
+    nextSpread
+);
 
-    if (!unlocked) {
 
-        previousButton.disabled = true;
+function nextSpread() {
 
-        nextButton.disabled = true;
-
-        pageCounter.textContent = "Password";
-
+    if (!unlocked || turning) {
         return;
     }
 
 
-    previousButton.disabled = currentPage <= 1;
+    if (currentSheet >= TOTAL_SHEETS - 1) {
 
-    nextButton.disabled = currentPage >= totalPages;
+        return;
+
+    }
 
 
-    pageCounter.textContent =
-        `Page ${currentPage} of ${totalPages}`;
+    turning = true;
+
+
+    /*
+        The current top sheet flips.
+
+        Because ALL sheets already exist,
+        this is a real individual sheet.
+    */
+
+    const sheets =
+        pagesContainer.querySelectorAll(".page");
+
+
+    const sheet =
+        sheets[currentSheet];
+
+
+    sheet.classList.add("flipped");
+
+
+    /*
+        Move to the next spread.
+    */
+
+    currentSheet++;
+
+
+    updateStacks();
+
+    updateNavigation();
+
+
+    setTimeout(() => {
+
+        turning = false;
+
+    }, 1300);
 
 }
 
 
-// ==========================================
-// INITIAL STATE
-// ==========================================
+/* =====================================================
+   PREVIOUS
+===================================================== */
 
-updateNavigation();
+previousButton.addEventListener(
+    "click",
+    previousSpread
+);
+
+
+function previousSpread() {
+
+    if (!unlocked || turning) {
+        return;
+    }
+
+
+    if (currentSheet <= 0) {
+
+        return;
+
+    }
+
+
+    turning = true;
+
+
+    /*
+        The previous physical sheet
+        rotates back.
+    */
+
+    currentSheet--;
+
+
+    const sheets =
+        pagesContainer.querySelectorAll(".page");
+
+
+    const sheet =
+        sheets[currentSheet];
+
+
+    sheet.classList.remove("flipped");
+
+
+    updateStacks();
+
+    updateNavigation();
+
+
+    setTimeout(() => {
+
+        turning = false;
+
+    }, 1300);
+
+}
+
+
+/* =====================================================
+   PAGE STACK VISUALS
+===================================================== */
+
+function updateStacks() {
+
+    /*
+        LEFT STACK
+
+        The further through the book we go,
+        the thicker the left stack becomes.
+    */
+
+    const leftPages =
+        currentSheet * 2;
+
+
+    /*
+        RIGHT STACK
+
+        The remaining sheets become thinner.
+    */
+
+    const rightPages =
+        TOTAL_SHEETS - currentSheet - 1;
+
+
+    updateStackAppearance(
+        leftStack,
+        leftPages,
+        "left"
+    );
+
+
+    updateStackAppearance(
+        rightStack,
+        rightPages,
+        "right"
+    );
+
+}
+
+
+/* =====================================================
+   STACK THICKNESS
+===================================================== */
+
+function updateStackAppearance(
+    stack,
+    pageCount,
+    side
+) {
+
+    /*
+        Each page adds a tiny amount
+        of visible thickness.
+    */
+
+    const thickness =
+        Math.min(pageCount * 1.5, 18);
+
+
+    if (side === "left") {
+
+        stack.style.width =
+            `${Math.max(thickness, 3)}px`;
+
+        stack.style.left =
+            `${-Math.max(thickness, 3)}px`;
+
+    } else {
+
+        stack.style.width =
+            `${Math.max(thickness, 3)}px`;
+
+        stack.style.right =
+            `${-Math.max(thickness, 3)}px`;
+
+    }
+
+}
+
+
+/* =====================================================
+   NAVIGATION
+===================================================== */
+
+function updateNavigation() {
+
+    previousButton.disabled =
+        currentSheet <= 0;
+
+
+    nextButton.disabled =
+        currentSheet >= TOTAL_SHEETS - 1;
+
+
+    const leftPage =
+        currentSheet * 2 + 1;
+
+
+    const rightPage =
+        Math.min(
+            currentSheet * 2 + 2,
+            TOTAL_PAGES
+        );
+
+
+    pageCounter.textContent =
+        `${leftPage}–${rightPage} / ${TOTAL_PAGES}`;
+
+}
+
+
+/* =====================================================
+   KEYBOARD CONTROLS
+===================================================== */
+
+document.addEventListener(
+    "keydown",
+    function(event) {
+
+        if (!unlocked) {
+            return;
+        }
+
+
+        if (event.key === "ArrowRight") {
+
+            nextSpread();
+
+        }
+
+
+        if (event.key === "ArrowLeft") {
+
+            previousSpread();
+
+        }
+
+    }
+);
