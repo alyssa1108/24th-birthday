@@ -1,7 +1,7 @@
 ```css
 /* =====================================================
-   OUR STORY — COMPLETE STYLE.CSS
-   PHYSICAL BOOK DIMENSIONS MATCH THE COVER
+   OUR STORY
+   SLIM PHYSICAL BOOK
 ===================================================== */
 
 * {
@@ -22,6 +22,11 @@
 
     --brown: #473522;
 }
+
+
+/* =====================================================
+   GLOBAL
+===================================================== */
 
 html,
 body {
@@ -55,6 +60,7 @@ body {
     inset: 0;
 
     display: flex;
+
     align-items: center;
     justify-content: center;
 
@@ -76,20 +82,16 @@ body {
 
 /* =====================================================
    GREEN COVER
-   THIS IS THE MASTER DIMENSION
 ===================================================== */
 
 .cover {
     position: relative;
 
     /*
-        THIS IS THE WIDTH OF ONE BOOK SIDE.
+        The cover stays portrait-shaped.
     */
-    width: min(42vw, 540px);
 
-    /*
-        THIS IS THE HEIGHT OF ONE BOOK SIDE.
-    */
+    width: min(42vw, 540px);
     height: min(80vh, 780px);
 
     cursor: pointer;
@@ -245,40 +247,39 @@ body {
 
 
 /* =====================================================
-   MASTER BOOK DIMENSIONS
+   PHYSICAL BOOK
 ===================================================== */
 
 /*
-    VERY IMPORTANT:
+    IMPORTANT:
 
-    The green cover is:
+    The open book is deliberately smaller.
 
-        width  = 42vw / max 540px
-        height = 80vh / max 780px
+    Each individual page is kept in the same
+    portrait-style proportion as the cover.
 
+    OPEN BOOK:
 
-    The OPEN BOOK is:
+        ┌──────────┬──────────┐
+        │          │          │
+        │  PAGE    │   PAGE   │
+        │          │          │
+        │          │          │
+        └──────────┴──────────┘
 
-        width  = 84vw / max 1080px
-        height = 80vh / max 780px
-
-
-    Therefore:
-
-        ONE OPEN PAGE
-        =
-        ONE GREEN COVER
-
-    This is what makes the book physically
-    believable when it closes.
+    Each page is a portrait page.
 */
 
 .book {
     position: relative;
 
-    width: min(84vw, 1080px);
+    /*
+        Smaller overall footprint.
+    */
 
-    height: min(80vh, 780px);
+    width: min(70vw, 900px);
+
+    height: min(67vh, 650px);
 
     transform-style: preserve-3d;
 
@@ -294,9 +295,9 @@ body {
 ===================================================== */
 
 .password-book {
-    width: min(84vw, 1080px);
+    width: min(70vw, 900px);
 
-    height: min(80vh, 780px);
+    height: min(67vh, 650px);
 }
 
 
@@ -399,7 +400,7 @@ body {
 
 
 /* =====================================================
-   CENTRE SPINE
+   SPINE
 ===================================================== */
 
 .book::after {
@@ -412,7 +413,7 @@ body {
     left: 50%;
     top: 0;
 
-    width: 20px;
+    width: 18px;
     height: 100%;
 
     transform: translateX(-50%);
@@ -440,7 +441,7 @@ body {
 
     font-family: "Great Vibes", cursive;
 
-    font-size: 48px;
+    font-size: 43px;
 
     opacity: .85;
 
@@ -450,29 +451,29 @@ body {
 }
 
 .floral-tl {
-    top: 18px;
-    left: 22px;
+    top: 17px;
+    left: 20px;
 
     transform: rotate(-25deg);
 }
 
 .floral-tr {
-    top: 18px;
-    right: 22px;
+    top: 17px;
+    right: 20px;
 
     transform: rotate(25deg);
 }
 
 .floral-bl {
-    bottom: 18px;
-    left: 22px;
+    bottom: 17px;
+    left: 20px;
 
     transform: rotate(-155deg);
 }
 
 .floral-br {
-    bottom: 18px;
-    right: 22px;
+    bottom: 17px;
+    right: 20px;
 
     transform: rotate(155deg);
 }
@@ -489,9 +490,9 @@ body {
 
     letter-spacing: 2px;
 
-    font-size: clamp(14px, 1.3vw, 20px);
+    font-size: clamp(13px, 1.2vw, 18px);
 
-    margin-bottom: 15px;
+    margin-bottom: 10px;
 
     line-height: 1.25;
 }
@@ -504,21 +505,21 @@ h2 {
 
     color: #49361f;
 
-    line-height: 1.1;
+    line-height: 1.05;
 }
 
 h1 {
-    font-size: clamp(52px, 5vw, 80px);
+    font-size: clamp(48px, 4.8vw, 76px);
 }
 
 h2 {
-    font-size: clamp(38px, 4vw, 62px);
+    font-size: clamp(35px, 3.8vw, 58px);
 }
 
 p {
-    font-size: clamp(18px, 1.5vw, 24px);
+    font-size: clamp(17px, 1.4vw, 22px);
 
-    line-height: 1.55;
+    line-height: 1.5;
 }
 
 
@@ -529,19 +530,19 @@ p {
 .divider {
     color: var(--gold);
 
-    font-size: 23px;
+    font-size: 21px;
 
     letter-spacing: 5px;
 
-    margin: 13px 0 20px;
+    margin: 10px 0 16px;
 }
 
 .heart {
     color: var(--gold);
 
-    font-size: 35px;
+    font-size: 33px;
 
-    margin-top: 20px;
+    margin-top: 17px;
 }
 
 
@@ -552,7 +553,7 @@ p {
 .password-content {
     width: 78%;
 
-    max-width: 430px;
+    max-width: 390px;
 
     max-height: 88%;
 
@@ -564,7 +565,7 @@ p {
 }
 
 .password-content > p {
-    margin-bottom: 25px;
+    margin-bottom: 22px;
 }
 
 .password-form {
@@ -572,13 +573,13 @@ p {
 
     flex-direction: column;
 
-    gap: 13px;
+    gap: 12px;
 }
 
 .password-form input {
     width: 100%;
 
-    padding: 14px 18px;
+    padding: 13px 18px;
 
     border-radius: 5px;
 
@@ -592,7 +593,7 @@ p {
 
     font-family: "Cormorant Garamond", serif;
 
-    font-size: 19px;
+    font-size: 18px;
 
     outline: none;
 }
@@ -605,7 +606,7 @@ p {
 }
 
 .password-form button {
-    padding: 14px 20px;
+    padding: 13px 20px;
 
     border: 1px solid #9c7b35;
 
@@ -622,7 +623,7 @@ p {
 
     font-family: "Cormorant Garamond", serif;
 
-    font-size: 19px;
+    font-size: 18px;
 
     letter-spacing: 1px;
 
@@ -645,7 +646,7 @@ p {
 
     color: #8b352b;
 
-    font-size: 16px;
+    font-size: 15px;
 }
 
 #passwordError.show {
@@ -672,7 +673,7 @@ p {
 
 
 /* =====================================================
-   SCRAPBOOK PAGE SYSTEM
+   SCRAPBOOK
 ===================================================== */
 
 .scrapbook-book {
@@ -681,7 +682,7 @@ p {
 
 
 /* =====================================================
-   INDIVIDUAL PHYSICAL SHEET
+   PHYSICAL SHEET
 ===================================================== */
 
 .page {
@@ -690,20 +691,16 @@ p {
     top: 0;
     left: 50%;
 
-    /*
-        50% of 1080px = 540px
-
-        EXACTLY the same as the
-        maximum width of the green cover.
-    */
-
     width: 50%;
-
     height: 100%;
 
     transform-origin: left center;
 
     transform-style: preserve-3d;
+
+    /*
+        JS will control this dynamically.
+    */
 
     z-index: var(--page-z);
 
@@ -743,7 +740,7 @@ p {
 
 
 /* =====================================================
-   FRONT OF PAGE
+   FRONT
 ===================================================== */
 
 .page-front {
@@ -756,7 +753,7 @@ p {
 
 
 /* =====================================================
-   BACK OF PAGE
+   BACK
 ===================================================== */
 
 .page-back {
@@ -771,7 +768,7 @@ p {
 
 
 /* =====================================================
-   TURN PAGE
+   FLIPPED
 ===================================================== */
 
 .page.flipped {
@@ -788,16 +785,8 @@ p {
 
     inset: 0;
 
-    /*
-        Slightly generous inner spacing.
-
-        This keeps the top ornaments,
-        headings and photographs safely
-        inside the page.
-    */
-
     padding:
-        7%
+        8%
         8%
         9%;
 
@@ -818,12 +807,7 @@ p {
 .scrap-content h3 {
     font-family: "Great Vibes", cursive;
 
-    /*
-        Smaller than before so long titles
-        don't get clipped.
-    */
-
-    font-size: clamp(34px, 3.6vw, 56px);
+    font-size: clamp(31px, 3.2vw, 50px);
 
     font-weight: 400;
 
@@ -831,15 +815,15 @@ p {
 
     line-height: 1.05;
 
-    max-width: 92%;
+    max-width: 88%;
 
     margin: 0;
 }
 
 .scrap-content .eyebrow {
-    margin-bottom: 7px;
+    margin-bottom: 5px;
 
-    max-width: 90%;
+    max-width: 88%;
 }
 
 
@@ -848,35 +832,29 @@ p {
 ===================================================== */
 
 .scrap-content .divider {
-    margin: 9px 0 12px;
+    margin: 8px 0 11px;
 
-    font-size: 20px;
+    font-size: 19px;
 }
 
 
 /* =====================================================
-   PHOTO PLACEHOLDER
+   PHOTO
 ===================================================== */
 
 .photo-placeholder {
-    /*
-        The photo is deliberately smaller
-        so it never forces the content
-        outside the page.
-    */
-
-    width: min(190px, 62%);
+    width: min(165px, 58%);
 
     aspect-ratio: 4 / 5;
 
-    margin: 9px auto;
+    margin: 8px auto;
 
     display: flex;
 
     align-items: center;
     justify-content: center;
 
-    border: 9px solid #f8f1e4;
+    border: 8px solid #f8f1e4;
 
     background:
         linear-gradient(
@@ -890,7 +868,7 @@ p {
 
     color: #8c7b5f;
 
-    font-size: 13px;
+    font-size: 12px;
 
     letter-spacing: 2px;
 
@@ -907,11 +885,11 @@ p {
 .scrap-date {
     color: #80652e;
 
-    font-size: 16px;
+    font-size: 15px;
 
     font-style: italic;
 
-    margin: 2px 0 7px;
+    margin: 2px 0 6px;
 
     line-height: 1.2;
 
@@ -920,22 +898,17 @@ p {
 
 
 /* =====================================================
-   SCRAPBOOK MESSAGE
+   TEXT
 ===================================================== */
 
 .scrap-text {
-    max-width: 330px;
+    max-width: 290px;
 
-    font-size: 18px;
+    font-size: 16px;
 
-    line-height: 1.45;
+    line-height: 1.4;
 
-    /*
-        Prevents text from pushing
-        the page content outside.
-    */
-
-    max-height: 20%;
+    max-height: 18%;
 
     overflow: hidden;
 
@@ -950,19 +923,19 @@ p {
 .page-number {
     position: absolute;
 
-    right: 22px;
-    bottom: 17px;
+    right: 19px;
+    bottom: 16px;
 
     color: #94763a;
 
-    font-size: 14px;
+    font-size: 13px;
 
     letter-spacing: 2px;
 }
 
 
 /* =====================================================
-   PAGE STACKS
+   STACKS
 ===================================================== */
 
 .page-stack {
@@ -1084,43 +1057,34 @@ p {
 
 
 /* =====================================================
-   RESPONSIVE — TABLET
+   TABLET
 ===================================================== */
 
 @media (max-width: 1000px) {
 
-    /*
-        On smaller screens, maintain the exact
-        2:1 relationship between open book
-        and individual cover/page.
-    */
-
     .cover {
         width: 42vw;
-        height: 76vh;
+        height: 70vh;
     }
 
     .book,
     .password-book {
         width: 84vw;
-        height: 76vh;
+        height: 70vh;
     }
 
     .scrap-content {
-        padding:
-            7%
-            7%
-            9%;
+        padding: 7%;
     }
 
     .photo-placeholder {
-        width: min(170px, 62%);
+        width: min(150px, 58%);
     }
 }
 
 
 /* =====================================================
-   RESPONSIVE — MOBILE
+   MOBILE
 ===================================================== */
 
 @media (max-width: 800px) {
@@ -1129,11 +1093,6 @@ p {
         width: 76vw;
         height: 74vh;
     }
-
-    /*
-        Two pages must still equal
-        the full open-book width.
-    */
 
     .book,
     .password-book {
@@ -1144,36 +1103,19 @@ p {
     }
 
     .floral {
-        font-size: 34px;
-    }
-
-    .floral-tl,
-    .floral-tr {
-        top: 14px;
-    }
-
-    .floral-bl,
-    .floral-br {
-        bottom: 14px;
+        font-size: 32px;
     }
 
     .scrap-content {
-        padding:
-            7%
-            6%
-            9%;
+        padding: 6%;
     }
 
     .scrap-content h3 {
-        font-size: clamp(29px, 7vw, 44px);
+        font-size: clamp(28px, 7vw, 42px);
     }
 
     .photo-placeholder {
-        width: min(145px, 62%);
-
-        border-width: 7px;
-
-        margin: 7px auto;
+        width: min(135px, 58%);
     }
 
     .scrap-date {
@@ -1181,7 +1123,7 @@ p {
     }
 
     .scrap-text {
-        font-size: 15px;
+        font-size: 14px;
     }
 
     .book-navigation {
@@ -1194,84 +1136,24 @@ p {
    SHORT SCREENS
 ===================================================== */
 
-@media (max-height: 700px) {
-
-    .cover {
-        height: 72vh;
-    }
+@media (max-height: 650px) {
 
     .book,
     .password-book {
-        height: 72vh;
-    }
-
-    .scrap-content {
-        padding-top: 6%;
-        padding-bottom: 8%;
+        height: 67vh;
     }
 
     .photo-placeholder {
-        width: min(155px, 58%);
-
-        margin: 6px auto;
+        width: min(140px, 56%);
     }
 
-    .divider {
-        margin: 7px 0 10px;
-    }
-
-    .heart {
-        margin-top: 10px;
+    .scrap-content {
+        padding-top: 5%;
+        padding-bottom: 7%;
     }
 
     .book-navigation {
         bottom: 12px;
-    }
-}
-
-
-/* =====================================================
-   VERY SHORT SCREENS
-===================================================== */
-
-@media (max-height: 580px) {
-
-    .cover {
-        height: 70vh;
-    }
-
-    .book,
-    .password-book {
-        height: 70vh;
-    }
-
-    .scrap-content {
-        padding:
-            5%
-            6%
-            7%;
-    }
-
-    .photo-placeholder {
-        width: min(120px, 52%);
-
-        margin: 4px auto;
-    }
-
-    .scrap-content h3 {
-        font-size: clamp(27px, 4vw, 40px);
-    }
-
-    .scrap-date {
-        font-size: 13px;
-    }
-
-    .scrap-text {
-        font-size: 14px;
-    }
-
-    .floral {
-        font-size: 28px;
     }
 }
 ```
