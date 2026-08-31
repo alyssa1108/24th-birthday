@@ -1,9 +1,4 @@
 ```css
-/* =====================================================
-   OUR STORY
-   SLIM PHYSICAL BOOK
-===================================================== */
-
 * {
     box-sizing: border-box;
     margin: 0;
@@ -13,20 +8,12 @@
 :root {
     --green: #0b2418;
     --deep-green: #06140d;
-
     --gold: #c8a04b;
     --gold-light: #e5ca82;
-
     --cream: #f3ead6;
     --cream-shadow: #dfd0b1;
-
     --brown: #473522;
 }
-
-
-/* =====================================================
-   GLOBAL
-===================================================== */
 
 html,
 body {
@@ -46,13 +33,12 @@ body {
         );
 
     font-family: "Cormorant Garamond", serif;
-
     color: var(--brown);
 }
 
 
 /* =====================================================
-   CLOSED BOOK
+   CLOSED BOOK / COVER
 ===================================================== */
 
 .closed-book {
@@ -60,10 +46,8 @@ body {
     inset: 0;
 
     display: flex;
-
     align-items: center;
     justify-content: center;
-
     flex-direction: column;
 
     perspective: 2000px;
@@ -79,17 +63,8 @@ body {
     pointer-events: none;
 }
 
-
-/* =====================================================
-   GREEN COVER
-===================================================== */
-
 .cover {
     position: relative;
-
-    /*
-        The cover stays portrait-shaped.
-    */
 
     width: min(42vw, 540px);
     height: min(80vh, 780px);
@@ -97,7 +72,6 @@ body {
     cursor: pointer;
 
     transform-style: preserve-3d;
-
     transform-origin: left center;
 
     transition:
@@ -124,7 +98,6 @@ body {
     display: block;
 
     user-select: none;
-
     -webkit-user-drag: none;
 
     filter:
@@ -135,7 +108,6 @@ body {
 
 .cover-glow {
     position: absolute;
-
     inset: 8%;
 
     pointer-events: none;
@@ -157,11 +129,6 @@ body {
     opacity: 1;
 }
 
-
-/* =====================================================
-   COVER SHADOW
-===================================================== */
-
 .book-shadow {
     position: absolute;
 
@@ -177,18 +144,12 @@ body {
     filter: blur(22px);
 }
 
-
-/* =====================================================
-   OPEN HINT
-===================================================== */
-
 .open-hint {
     margin-top: 12px;
 
     color: var(--gold-light);
 
     font-size: 18px;
-
     letter-spacing: 2px;
 
     text-shadow:
@@ -199,12 +160,10 @@ body {
 
 .open-hint span {
     color: var(--gold);
-
     margin: 0 10px;
 }
 
 @keyframes hintPulse {
-
     0%,
     100% {
         opacity: .6;
@@ -217,19 +176,16 @@ body {
 
 
 /* =====================================================
-   BOOK SCENE
+   BOOK SCENES
 ===================================================== */
 
 .book-scene {
     position: fixed;
-
     inset: 0;
 
     display: flex;
-
     align-items: center;
     justify-content: center;
-
     flex-direction: column;
 
     perspective: 2400px;
@@ -241,44 +197,26 @@ body {
 
 .book-scene.hidden {
     opacity: 0;
-
     pointer-events: none;
 }
 
 
 /* =====================================================
-   PHYSICAL BOOK
+   BOOK SIZE
+   SLIMMER / PORTRAIT PROPORTION
 ===================================================== */
-
-/*
-    IMPORTANT:
-
-    The open book is deliberately smaller.
-
-    Each individual page is kept in the same
-    portrait-style proportion as the cover.
-
-    OPEN BOOK:
-
-        ┌──────────┬──────────┐
-        │          │          │
-        │  PAGE    │   PAGE   │
-        │          │          │
-        │          │          │
-        └──────────┴──────────┘
-
-    Each page is a portrait page.
-*/
 
 .book {
     position: relative;
 
     /*
-        Smaller overall footprint.
+        This is deliberately slimmer than before.
+
+        The open book is approximately two
+        portrait covers placed beside one another.
     */
 
     width: min(70vw, 900px);
-
     height: min(67vh, 650px);
 
     transform-style: preserve-3d;
@@ -289,14 +227,8 @@ body {
         );
 }
 
-
-/* =====================================================
-   PASSWORD BOOK
-===================================================== */
-
 .password-book {
     width: min(70vw, 900px);
-
     height: min(67vh, 650px);
 }
 
@@ -361,7 +293,6 @@ body {
     content: "";
 
     position: absolute;
-
     inset: 0;
 
     pointer-events: none;
@@ -453,28 +384,24 @@ body {
 .floral-tl {
     top: 17px;
     left: 20px;
-
     transform: rotate(-25deg);
 }
 
 .floral-tr {
     top: 17px;
     right: 20px;
-
     transform: rotate(25deg);
 }
 
 .floral-bl {
     bottom: 17px;
     left: 20px;
-
     transform: rotate(-155deg);
 }
 
 .floral-br {
     bottom: 17px;
     right: 20px;
-
     transform: rotate(155deg);
 }
 
@@ -552,15 +479,12 @@ p {
 
 .password-content {
     width: 78%;
-
     max-width: 390px;
-
     max-height: 88%;
 
     display: flex;
 
     flex-direction: column;
-
     justify-content: center;
 }
 
@@ -656,7 +580,6 @@ p {
 }
 
 @keyframes shake {
-
     0%,
     100% {
         transform: translateX(0);
@@ -673,17 +596,12 @@ p {
 
 
 /* =====================================================
-   SCRAPBOOK
+   SCRAPBOOK SHEETS
 ===================================================== */
 
 .scrapbook-book {
     overflow: visible;
 }
-
-
-/* =====================================================
-   PHYSICAL SHEET
-===================================================== */
 
 .page {
     position: absolute;
@@ -697,10 +615,6 @@ p {
     transform-origin: left center;
 
     transform-style: preserve-3d;
-
-    /*
-        JS will control this dynamically.
-    */
 
     z-index: var(--page-z);
 
@@ -738,11 +652,6 @@ p {
         inset 0 0 35px rgba(90, 60, 25, .13);
 }
 
-
-/* =====================================================
-   FRONT
-===================================================== */
-
 .page-front {
     border-radius: 0 10px 10px 0;
 
@@ -750,11 +659,6 @@ p {
         inset 13px 0 20px rgba(65, 40, 15, .14),
         inset 0 0 35px rgba(90, 60, 25, .13);
 }
-
-
-/* =====================================================
-   BACK
-===================================================== */
 
 .page-back {
     transform: rotateY(180deg);
@@ -765,11 +669,6 @@ p {
         inset -13px 0 20px rgba(65, 40, 15, .14),
         inset 0 0 35px rgba(90, 60, 25, .13);
 }
-
-
-/* =====================================================
-   FLIPPED
-===================================================== */
 
 .page.flipped {
     transform: rotateY(-180deg);
@@ -822,14 +721,7 @@ p {
 
 .scrap-content .eyebrow {
     margin-bottom: 5px;
-
-    max-width: 88%;
 }
-
-
-/* =====================================================
-   SCRAPBOOK DIVIDER
-===================================================== */
 
 .scrap-content .divider {
     margin: 8px 0 11px;
@@ -935,7 +827,7 @@ p {
 
 
 /* =====================================================
-   STACKS
+   PAGE STACKS
 ===================================================== */
 
 .page-stack {
@@ -1027,7 +919,6 @@ p {
 
 .nav-button:disabled {
     opacity: .25;
-
     cursor: default;
 }
 
@@ -1057,7 +948,7 @@ p {
 
 
 /* =====================================================
-   TABLET
+   RESPONSIVE
 ===================================================== */
 
 @media (max-width: 1000px) {
@@ -1098,7 +989,6 @@ p {
     .password-book {
         width: 92vw;
         height: 70vh;
-
         min-height: 400px;
     }
 
