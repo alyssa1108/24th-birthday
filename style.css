@@ -1,4 +1,14 @@
 ```css
+/* =====================================================
+   OUR STORY — COMPLETE STYLE
+   Slim portrait book matching the cover
+===================================================== */
+
+
+/* =====================================================
+   GLOBAL
+===================================================== */
+
 * {
     box-sizing: border-box;
     margin: 0;
@@ -6,22 +16,31 @@
 }
 
 :root {
+
     --green: #0b2418;
     --deep-green: #06140d;
+
     --gold: #c8a04b;
     --gold-light: #e5ca82;
+
     --cream: #f3ead6;
     --cream-shadow: #dfd0b1;
+
     --brown: #473522;
 }
 
+
 html,
 body {
+
     width: 100%;
     height: 100%;
+
 }
 
+
 body {
+
     overflow: hidden;
 
     background:
@@ -32,22 +51,30 @@ body {
             #070604 100%
         );
 
-    font-family: "Cormorant Garamond", serif;
+    font-family:
+        "Cormorant Garamond",
+        serif;
+
     color: var(--brown);
+
 }
 
 
 /* =====================================================
-   CLOSED BOOK / COVER
+   CLOSED COVER
 ===================================================== */
 
 .closed-book {
+
     position: fixed;
+
     inset: 0;
 
     display: flex;
+
     align-items: center;
     justify-content: center;
+
     flex-direction: column;
 
     perspective: 2000px;
@@ -55,41 +82,75 @@ body {
     transition:
         opacity 1s ease,
         visibility 1s ease;
+
 }
+
 
 .closed-book.hidden {
+
     opacity: 0;
+
     visibility: hidden;
+
     pointer-events: none;
+
 }
 
+
+/* =====================================================
+   GREEN COVER
+===================================================== */
+
 .cover {
+
     position: relative;
 
+    /*
+        Portrait proportions.
+
+        This is deliberately kept close
+        to the dimensions of the cover.
+    */
+
     width: min(42vw, 540px);
+
     height: min(80vh, 780px);
+
+    max-height: 78vh;
 
     cursor: pointer;
 
     transform-style: preserve-3d;
+
     transform-origin: left center;
 
     transition:
-        transform 1.6s cubic-bezier(.22, .61, .36, 1),
+        transform 1.6s
+        cubic-bezier(.22, .61, .36, 1),
+
         filter .4s ease;
+
 }
+
 
 .cover:hover {
+
     filter: brightness(1.06);
+
 }
 
+
 .cover.opening {
+
     transform:
         translateX(-22%)
         rotateY(-115deg);
+
 }
 
+
 .cover img {
+
     width: 100%;
     height: 100%;
 
@@ -98,16 +159,22 @@ body {
     display: block;
 
     user-select: none;
+
     -webkit-user-drag: none;
 
     filter:
         drop-shadow(
-            0 35px 35px rgba(0, 0, 0, .65)
+            0 35px 35px
+            rgba(0, 0, 0, .65)
         );
+
 }
 
+
 .cover-glow {
+
     position: absolute;
+
     inset: 8%;
 
     pointer-events: none;
@@ -122,48 +189,79 @@ body {
 
     opacity: 0;
 
-    transition: opacity .5s ease;
+    transition:
+        opacity .5s ease;
+
 }
+
 
 .cover:hover .cover-glow {
+
     opacity: 1;
+
 }
 
+
+/* =====================================================
+   COVER SHADOW
+===================================================== */
+
 .book-shadow {
+
     position: absolute;
 
     width: min(38vw, 500px);
+
     height: 45px;
 
     bottom: 8%;
 
     border-radius: 50%;
 
-    background: rgba(0, 0, 0, .65);
+    background:
+        rgba(0, 0, 0, .65);
 
     filter: blur(22px);
+
 }
 
+
+/* =====================================================
+   OPEN HINT
+===================================================== */
+
 .open-hint {
+
     margin-top: 12px;
 
     color: var(--gold-light);
 
     font-size: 18px;
+
     letter-spacing: 2px;
 
     text-shadow:
-        0 3px 12px rgba(0, 0, 0, .7);
+        0 3px 12px
+        rgba(0, 0, 0, .7);
 
-    animation: hintPulse 2.5s ease-in-out infinite;
+    animation:
+        hintPulse 2.5s
+        ease-in-out infinite;
+
 }
+
 
 .open-hint span {
+
     color: var(--gold);
+
     margin: 0 10px;
+
 }
 
+
 @keyframes hintPulse {
+
     0%,
     100% {
         opacity: .6;
@@ -172,6 +270,7 @@ body {
     50% {
         opacity: 1;
     }
+
 }
 
 
@@ -180,64 +279,91 @@ body {
 ===================================================== */
 
 .book-scene {
+
     position: fixed;
+
     inset: 0;
 
     display: flex;
+
     align-items: center;
+
     justify-content: center;
+
     flex-direction: column;
 
     perspective: 2400px;
 
     opacity: 1;
 
-    transition: opacity .9s ease;
+    transition:
+        opacity .9s ease;
+
 }
 
+
 .book-scene.hidden {
+
     opacity: 0;
+
     pointer-events: none;
+
 }
 
 
 /* =====================================================
-   BOOK SIZE
-   SLIMMER / PORTRAIT PROPORTION
+   IMPORTANT:
+   SLIM PORTRAIT BOOK DIMENSIONS
 ===================================================== */
 
 .book {
+
     position: relative;
 
     /*
-        This is deliberately slimmer than before.
+        OLD VERSION:
+        width: min(88vw, 1250px)
 
-        The open book is approximately two
-        portrait covers placed beside one another.
+        That was what made the book too wide.
+
+        NEW VERSION:
+        The complete open book is approximately
+        1.30 times its height.
+
+        Each individual page is therefore
+        much slimmer.
     */
 
-    width: min(70vw, 900px);
-    height: min(67vh, 650px);
+    width: min(78vw, 980px);
+
+    height: min(78vh, 760px);
+
+    /*
+        Keep the book from becoming too wide
+        on large monitors.
+    */
+
+    max-width: 980px;
+
+    max-height: 760px;
 
     transform-style: preserve-3d;
 
     filter:
         drop-shadow(
-            0 30px 30px rgba(0, 0, 0, .6)
+            0 30px 30px
+            rgba(0, 0, 0, .6)
         );
-}
 
-.password-book {
-    width: min(70vw, 900px);
-    height: min(67vh, 650px);
 }
 
 
 /* =====================================================
-   PAPER
+   PASSWORD PAGES
 ===================================================== */
 
 .paper {
+
     position: absolute;
 
     top: 0;
@@ -246,6 +372,7 @@ body {
     height: 100%;
 
     background:
+
         linear-gradient(
             90deg,
             rgba(90, 60, 25, .08),
@@ -253,34 +380,51 @@ body {
             transparent 88%,
             rgba(90, 60, 25, .08)
         ),
+
         var(--cream);
 
     overflow: hidden;
 
     box-shadow:
-        inset 0 0 35px rgba(90, 60, 25, .13);
+        inset 0 0 35px
+        rgba(90, 60, 25, .13);
 
-    transform-style: preserve-3d;
 }
+
 
 .left-paper {
+
     left: 0;
 
-    border-radius: 10px 0 0 10px;
+    border-radius:
+        10px 0 0 10px;
 
     box-shadow:
-        inset -14px 0 22px rgba(65, 40, 15, .15),
-        inset 0 0 35px rgba(90, 60, 25, .13);
+
+        inset -14px 0 22px
+        rgba(65, 40, 15, .15),
+
+        inset 0 0 35px
+        rgba(90, 60, 25, .13);
+
 }
 
+
 .right-paper {
+
     right: 0;
 
-    border-radius: 0 10px 10px 0;
+    border-radius:
+        0 10px 10px 0;
 
     box-shadow:
-        inset 14px 0 22px rgba(65, 40, 15, .15),
-        inset 0 0 35px rgba(90, 60, 25, .13);
+
+        inset 14px 0 22px
+        rgba(65, 40, 15, .15),
+
+        inset 0 0 35px
+        rgba(90, 60, 25, .13);
+
 }
 
 
@@ -290,9 +434,11 @@ body {
 
 .paper::after,
 .page-face::after {
+
     content: "";
 
     position: absolute;
+
     inset: 0;
 
     pointer-events: none;
@@ -300,12 +446,14 @@ body {
     opacity: .25;
 
     background-image:
+
         radial-gradient(
             rgba(100, 70, 30, .14) .7px,
             transparent .7px
         );
 
     background-size: 5px 5px;
+
 }
 
 
@@ -314,6 +462,7 @@ body {
 ===================================================== */
 
 .paper-content {
+
     position: relative;
 
     width: 100%;
@@ -322,19 +471,23 @@ body {
     display: flex;
 
     align-items: center;
+
     justify-content: center;
 
-    padding: 8%;
+    padding:
+        8% 9%;
 
     text-align: center;
+
 }
 
 
 /* =====================================================
-   SPINE
+   CENTRE SPINE
 ===================================================== */
 
 .book::after {
+
     content: "";
 
     position: absolute;
@@ -342,22 +495,27 @@ body {
     z-index: 500;
 
     left: 50%;
+
     top: 0;
 
     width: 18px;
+
     height: 100%;
 
-    transform: translateX(-50%);
+    transform:
+        translateX(-50%);
 
     pointer-events: none;
 
     background:
+
         linear-gradient(
             90deg,
             rgba(50, 30, 10, .2),
             rgba(255, 255, 255, .18),
             rgba(50, 30, 10, .2)
         );
+
 }
 
 
@@ -366,43 +524,63 @@ body {
 ===================================================== */
 
 .floral {
+
     position: absolute;
 
     color: var(--gold);
 
-    font-family: "Great Vibes", cursive;
+    font-family:
+        "Great Vibes",
+        cursive;
 
-    font-size: 43px;
+    font-size: 48px;
 
     opacity: .85;
 
-    z-index: 3;
-
-    pointer-events: none;
 }
+
 
 .floral-tl {
-    top: 17px;
-    left: 20px;
-    transform: rotate(-25deg);
+
+    top: 18px;
+    left: 22px;
+
+    transform:
+        rotate(-25deg);
+
 }
+
 
 .floral-tr {
-    top: 17px;
-    right: 20px;
-    transform: rotate(25deg);
+
+    top: 18px;
+    right: 22px;
+
+    transform:
+        rotate(25deg);
+
 }
+
 
 .floral-bl {
-    bottom: 17px;
-    left: 20px;
-    transform: rotate(-155deg);
+
+    bottom: 18px;
+    left: 22px;
+
+    transform:
+        rotate(-155deg);
+
 }
 
+
 .floral-br {
-    bottom: 17px;
-    right: 20px;
-    transform: rotate(155deg);
+
+    bottom: 18px;
+    right: 22px;
+
+    transform:
+        rotate(155deg);
+
 }
 
 
@@ -411,42 +589,74 @@ body {
 ===================================================== */
 
 .eyebrow {
+
     color: #85682e;
 
     text-transform: uppercase;
 
     letter-spacing: 2px;
 
-    font-size: clamp(13px, 1.2vw, 18px);
+    font-size:
+        clamp(
+            12px,
+            1.1vw,
+            18px
+        );
 
-    margin-bottom: 10px;
+    margin-bottom: 12px;
 
-    line-height: 1.25;
 }
+
 
 h1,
 h2 {
-    font-family: "Great Vibes", cursive;
+
+    font-family:
+        "Great Vibes",
+        cursive;
 
     font-weight: 400;
 
     color: #49361f;
 
-    line-height: 1.05;
 }
+
 
 h1 {
-    font-size: clamp(48px, 4.8vw, 76px);
+
+    font-size:
+        clamp(
+            46px,
+            4.5vw,
+            74px
+        );
+
 }
+
 
 h2 {
-    font-size: clamp(35px, 3.8vw, 58px);
+
+    font-size:
+        clamp(
+            34px,
+            3.4vw,
+            58px
+        );
+
 }
 
+
 p {
-    font-size: clamp(17px, 1.4vw, 22px);
+
+    font-size:
+        clamp(
+            16px,
+            1.35vw,
+            22px
+        );
 
     line-height: 1.5;
+
 }
 
 
@@ -455,21 +665,27 @@ p {
 ===================================================== */
 
 .divider {
+
     color: var(--gold);
 
     font-size: 21px;
 
-    letter-spacing: 5px;
+    letter-spacing: 4px;
 
-    margin: 10px 0 16px;
+    margin:
+        10px 0 17px;
+
 }
 
+
 .heart {
+
     color: var(--gold);
 
-    font-size: 33px;
+    font-size: 34px;
 
     margin-top: 17px;
+
 }
 
 
@@ -478,74 +694,99 @@ p {
 ===================================================== */
 
 .password-content {
-    width: 78%;
+
+    width: 82%;
+
     max-width: 390px;
-    max-height: 88%;
 
-    display: flex;
-
-    flex-direction: column;
-    justify-content: center;
 }
+
 
 .password-content > p {
+
     margin-bottom: 22px;
+
 }
 
+
 .password-form {
+
     display: flex;
 
     flex-direction: column;
 
     gap: 12px;
+
 }
 
+
 .password-form input {
+
     width: 100%;
 
-    padding: 13px 18px;
+    padding:
+        13px 16px;
 
     border-radius: 5px;
 
-    border: 1px solid rgba(130, 98, 43, .55);
+    border:
+        1px solid
+        rgba(130, 98, 43, .55);
 
-    background: rgba(255, 250, 235, .55);
+    background:
+        rgba(255, 250, 235, .55);
 
     color: var(--brown);
 
     text-align: center;
 
-    font-family: "Cormorant Garamond", serif;
+    font-family:
+        "Cormorant Garamond",
+        serif;
 
     font-size: 18px;
 
     outline: none;
+
 }
+
 
 .password-form input:focus {
-    border-color: var(--gold);
+
+    border-color:
+        var(--gold);
 
     box-shadow:
-        0 0 0 3px rgba(201, 162, 75, .12);
+        0 0 0 3px
+        rgba(201, 162, 75, .12);
+
 }
 
-.password-form button {
-    padding: 13px 20px;
 
-    border: 1px solid #9c7b35;
+.password-form button {
+
+    padding:
+        13px 18px;
+
+    border:
+        1px solid #9c7b35;
 
     border-radius: 5px;
 
     background:
+
         linear-gradient(
             135deg,
             #102d1e,
             #07170f
         );
 
-    color: var(--gold-light);
+    color:
+        var(--gold-light);
 
-    font-family: "Cormorant Garamond", serif;
+    font-family:
+        "Cormorant Garamond",
+        serif;
 
     font-size: 18px;
 
@@ -554,32 +795,49 @@ p {
     cursor: pointer;
 
     transition:
+
         transform .2s ease,
+
         box-shadow .2s ease;
+
 }
+
 
 .password-form button:hover {
-    transform: translateY(-2px);
+
+    transform:
+        translateY(-2px);
 
     box-shadow:
-        0 7px 16px rgba(0, 0, 0, .25);
+        0 7px 16px
+        rgba(0, 0, 0, .25);
+
 }
 
+
 #passwordError {
+
     display: none;
 
     color: #8b352b;
 
     font-size: 15px;
+
 }
+
 
 #passwordError.show {
+
     display: block;
 
-    animation: shake .4s ease;
+    animation:
+        shake .4s ease;
+
 }
 
+
 @keyframes shake {
+
     0%,
     100% {
         transform: translateX(0);
@@ -592,36 +850,54 @@ p {
     75% {
         transform: translateX(6px);
     }
+
 }
 
 
 /* =====================================================
-   SCRAPBOOK SHEETS
+   SCRAPBOOK
 ===================================================== */
 
 .scrapbook-book {
+
     overflow: visible;
+
 }
 
+
+/* =====================================================
+   PHYSICAL PAGE SHEET
+===================================================== */
+
 .page {
+
     position: absolute;
 
     top: 0;
+
     left: 50%;
 
     width: 50%;
     height: 100%;
 
-    transform-origin: left center;
+    transform-origin:
+        left center;
 
-    transform-style: preserve-3d;
-
-    z-index: var(--page-z);
+    transform-style:
+        preserve-3d;
 
     transition:
-        transform 1.25s cubic-bezier(.645, .045, .355, 1);
+
+        transform 1.25s
+        cubic-bezier(
+            .645,
+            .045,
+            .355,
+            1
+        );
 
     pointer-events: none;
+
 }
 
 
@@ -630,15 +906,18 @@ p {
 ===================================================== */
 
 .page-face {
+
     position: absolute;
 
     inset: 0;
 
     overflow: hidden;
 
-    backface-visibility: hidden;
+    backface-visibility:
+        hidden;
 
     background:
+
         linear-gradient(
             90deg,
             rgba(90, 60, 25, .08),
@@ -646,32 +925,69 @@ p {
             transparent 88%,
             rgba(90, 60, 25, .08)
         ),
+
         var(--cream);
 
     box-shadow:
-        inset 0 0 35px rgba(90, 60, 25, .13);
+
+        inset 0 0 35px
+        rgba(90, 60, 25, .13);
+
 }
+
+
+/* =====================================================
+   FRONT
+===================================================== */
 
 .page-front {
-    border-radius: 0 10px 10px 0;
+
+    border-radius:
+        0 10px 10px 0;
 
     box-shadow:
-        inset 13px 0 20px rgba(65, 40, 15, .14),
-        inset 0 0 35px rgba(90, 60, 25, .13);
+
+        inset 13px 0 20px
+        rgba(65, 40, 15, .14),
+
+        inset 0 0 35px
+        rgba(90, 60, 25, .13);
+
 }
+
+
+/* =====================================================
+   BACK
+===================================================== */
 
 .page-back {
-    transform: rotateY(180deg);
 
-    border-radius: 10px 0 0 10px;
+    transform:
+        rotateY(180deg);
+
+    border-radius:
+        10px 0 0 10px;
 
     box-shadow:
-        inset -13px 0 20px rgba(65, 40, 15, .14),
-        inset 0 0 35px rgba(90, 60, 25, .13);
+
+        inset -13px 0 20px
+        rgba(65, 40, 15, .14),
+
+        inset 0 0 35px
+        rgba(90, 60, 25, .13);
+
 }
 
+
+/* =====================================================
+   FLIPPED
+===================================================== */
+
 .page.flipped {
-    transform: rotateY(-180deg);
+
+    transform:
+        rotateY(-180deg);
+
 }
 
 
@@ -680,18 +996,23 @@ p {
 ===================================================== */
 
 .scrap-content {
+
     position: absolute;
 
     inset: 0;
 
+    /*
+        More top padding prevents
+        headings being clipped.
+    */
+
     padding:
-        8%
-        8%
-        9%;
+        7% 8% 6%;
 
     display: flex;
 
     align-items: center;
+
     justify-content: center;
 
     flex-direction: column;
@@ -700,33 +1021,43 @@ p {
 
     z-index: 2;
 
-    overflow: hidden;
 }
 
-.scrap-content h3 {
-    font-family: "Great Vibes", cursive;
 
-    font-size: clamp(31px, 3.2vw, 50px);
+.scrap-content h3 {
+
+    font-family:
+        "Great Vibes",
+        cursive;
+
+    font-size:
+        clamp(
+            32px,
+            3.2vw,
+            54px
+        );
 
     font-weight: 400;
 
-    color: #49361f;
+    color:
+        #49361f;
+
+    /*
+        Keeps long titles
+        inside the slimmer page.
+    */
+
+    max-width: 92%;
 
     line-height: 1.05;
 
-    max-width: 88%;
-
-    margin: 0;
 }
+
 
 .scrap-content .eyebrow {
-    margin-bottom: 5px;
-}
 
-.scrap-content .divider {
-    margin: 8px 0 11px;
+    margin-bottom: 6px;
 
-    font-size: 19px;
 }
 
 
@@ -735,20 +1066,31 @@ p {
 ===================================================== */
 
 .photo-placeholder {
-    width: min(165px, 58%);
 
-    aspect-ratio: 4 / 5;
+    width:
+        min(
+            180px,
+            62%
+        );
 
-    margin: 8px auto;
+    aspect-ratio:
+        4 / 5;
+
+    margin:
+        10px auto;
 
     display: flex;
 
     align-items: center;
+
     justify-content: center;
 
-    border: 8px solid #f8f1e4;
+    border:
+        9px solid
+        #f8f1e4;
 
     background:
+
         linear-gradient(
             135deg,
             #d3c6aa,
@@ -756,55 +1098,46 @@ p {
         );
 
     box-shadow:
-        0 9px 18px rgba(55, 35, 15, .24);
 
-    color: #8c7b5f;
+        0 9px 18px
+        rgba(55, 35, 15, .24);
 
-    font-size: 12px;
+    color:
+        #8c7b5f;
 
-    letter-spacing: 2px;
+    font-size: 13px;
 
-    transform: rotate(-2deg);
+    letter-spacing: 1.5px;
 
-    flex-shrink: 0;
+    transform:
+        rotate(-2deg);
+
 }
 
-
-/* =====================================================
-   DATE
-===================================================== */
 
 .scrap-date {
-    color: #80652e;
 
-    font-size: 15px;
-
-    font-style: italic;
-
-    margin: 2px 0 6px;
-
-    line-height: 1.2;
-
-    flex-shrink: 0;
-}
-
-
-/* =====================================================
-   TEXT
-===================================================== */
-
-.scrap-text {
-    max-width: 290px;
+    color:
+        #80652e;
 
     font-size: 16px;
 
-    line-height: 1.4;
+    font-style: italic;
 
-    max-height: 18%;
+    margin:
+        2px 0 8px;
 
-    overflow: hidden;
+}
 
-    flex-shrink: 1;
+
+.scrap-text {
+
+    max-width: 275px;
+
+    font-size: 17px;
+
+    line-height: 1.45;
+
 }
 
 
@@ -813,16 +1146,20 @@ p {
 ===================================================== */
 
 .page-number {
+
     position: absolute;
 
-    right: 19px;
-    bottom: 16px;
+    right: 20px;
 
-    color: #94763a;
+    bottom: 15px;
 
-    font-size: 13px;
+    color:
+        #94763a;
+
+    font-size: 14px;
 
     letter-spacing: 2px;
+
 }
 
 
@@ -831,41 +1168,54 @@ p {
 ===================================================== */
 
 .page-stack {
+
     position: absolute;
 
     top: 4px;
 
-    height: calc(100% - 8px);
+    height:
+        calc(100% - 8px);
 
-    width: 10px;
+    width: 8px;
 
     z-index: 0;
 
     pointer-events: none;
+
 }
 
-.left-stack {
-    left: -7px;
 
-    border-radius: 7px 0 0 7px;
+.left-stack {
+
+    left: -6px;
+
+    border-radius:
+        7px 0 0 7px;
 
     box-shadow:
+
         -3px 0 0 #c6b799,
         -6px 0 0 #e0d3b7,
         -9px 0 0 #b7a98c,
         -12px 0 0 #d8c9aa;
+
 }
 
-.right-stack {
-    right: -7px;
 
-    border-radius: 0 7px 7px 0;
+.right-stack {
+
+    right: -6px;
+
+    border-radius:
+        0 7px 7px 0;
 
     box-shadow:
+
         3px 0 0 #c6b799,
         6px 0 0 #e0d3b7,
         9px 0 0 #b7a98c,
         12px 0 0 #d8c9aa;
+
 }
 
 
@@ -874,6 +1224,7 @@ p {
 ===================================================== */
 
 .book-navigation {
+
     position: absolute;
 
     bottom: 34px;
@@ -882,21 +1233,28 @@ p {
 
     align-items: center;
 
-    gap: 34px;
+    gap: 30px;
+
 }
 
+
 .nav-button {
+
     width: 52px;
+
     height: 52px;
 
     border-radius: 50%;
 
-    border: 1px solid rgba(201, 162, 75, .65);
+    border:
+        1px solid
+        rgba(201, 162, 75, .65);
 
     background:
         rgba(7, 24, 15, .9);
 
-    color: var(--gold-light);
+    color:
+        var(--gold-light);
 
     font-size: 34px;
 
@@ -905,120 +1263,256 @@ p {
     cursor: pointer;
 
     transition:
+
         transform .2s ease,
+
         background .2s ease,
+
         opacity .2s ease;
+
 }
 
+
 .nav-button:hover:not(:disabled) {
-    transform: scale(1.08);
+
+    transform:
+        scale(1.08);
 
     background:
         rgba(20, 55, 35, .95);
+
 }
+
 
 .nav-button:disabled {
+
     opacity: .25;
+
     cursor: default;
+
 }
 
+
 .page-counter {
+
     min-width: 130px;
 
-    color: var(--gold-light);
+    color:
+        var(--gold-light);
 
     text-align: center;
 
     font-size: 18px;
 
     letter-spacing: 2px;
+
 }
 
+
 .navigation-hint {
+
     position: absolute;
 
     bottom: 9px;
 
-    color: rgba(228, 200, 120, .55);
+    color:
+        rgba(228, 200, 120, .55);
 
     font-size: 14px;
 
     letter-spacing: 1px;
+
 }
 
 
 /* =====================================================
-   RESPONSIVE
+   RESPONSIVE — TABLET
 ===================================================== */
 
-@media (max-width: 1000px) {
+@media (max-width: 900px) {
 
     .cover {
-        width: 42vw;
-        height: 70vh;
-    }
 
-    .book,
-    .password-book {
-        width: 84vw;
-        height: 70vh;
-    }
+        width: 60vw;
 
-    .scrap-content {
-        padding: 7%;
-    }
-
-    .photo-placeholder {
-        width: min(150px, 58%);
-    }
-}
-
-
-/* =====================================================
-   MOBILE
-===================================================== */
-
-@media (max-width: 800px) {
-
-    .cover {
-        width: 76vw;
         height: 74vh;
+
     }
 
-    .book,
-    .password-book {
-        width: 92vw;
-        height: 70vh;
-        min-height: 400px;
+
+    .book {
+
+        /*
+            Keep portrait proportions
+            even on smaller screens.
+        */
+
+        width: 82vw;
+
+        height: 64vh;
+
     }
 
-    .floral {
-        font-size: 32px;
-    }
 
     .scrap-content {
-        padding: 6%;
+
+        padding:
+            8% 7% 6%;
+
     }
+
 
     .scrap-content h3 {
-        font-size: clamp(28px, 7vw, 42px);
+
+        font-size:
+            clamp(
+                29px,
+                5vw,
+                45px
+            );
+
     }
+
 
     .photo-placeholder {
-        width: min(135px, 58%);
+
+        width:
+            min(
+                150px,
+                60%
+            );
+
     }
+
+}
+
+
+/* =====================================================
+   RESPONSIVE — PHONE
+===================================================== */
+
+@media (max-width: 600px) {
+
+    .cover {
+
+        width: 74vw;
+
+        height: 70vh;
+
+    }
+
+
+    .open-hint {
+
+        font-size: 15px;
+
+    }
+
+
+    .book {
+
+        width: 92vw;
+
+        height: 58vh;
+
+    }
+
+
+    .floral {
+
+        font-size: 30px;
+
+    }
+
+
+    .floral-tl,
+    .floral-tr {
+
+        top: 10px;
+
+    }
+
+
+    .floral-bl,
+    .floral-br {
+
+        bottom: 10px;
+
+    }
+
+
+    .scrap-content h3 {
+
+        font-size:
+            clamp(
+                25px,
+                6vw,
+                38px
+            );
+
+    }
+
+
+    .scrap-content .eyebrow {
+
+        font-size: 10px;
+
+        letter-spacing: 1px;
+
+    }
+
+
+    .photo-placeholder {
+
+        width: 110px;
+
+        border-width: 7px;
+
+    }
+
 
     .scrap-date {
-        font-size: 14px;
+
+        font-size: 13px;
+
     }
+
 
     .scrap-text {
+
         font-size: 14px;
+
     }
 
+
     .book-navigation {
-        bottom: 27px;
+
+        bottom: 25px;
+
+        gap: 18px;
+
     }
+
+
+    .nav-button {
+
+        width: 45px;
+
+        height: 45px;
+
+        font-size: 30px;
+
+    }
+
+
+    .page-counter {
+
+        min-width: 95px;
+
+        font-size: 15px;
+
+    }
+
 }
 
 
@@ -1028,22 +1522,32 @@ p {
 
 @media (max-height: 650px) {
 
-    .book,
-    .password-book {
+    .cover {
+
+        height: 68vh;
+
+    }
+
+
+    .book {
+
         height: 67vh;
+
     }
 
-    .photo-placeholder {
-        width: min(140px, 56%);
-    }
-
-    .scrap-content {
-        padding-top: 5%;
-        padding-bottom: 7%;
-    }
 
     .book-navigation {
+
         bottom: 12px;
+
     }
+
+
+    .navigation-hint {
+
+        display: none;
+
+    }
+
 }
 ```
