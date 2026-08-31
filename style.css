@@ -1,5 +1,7 @@
+```css
 /* =====================================================
-   GLOBAL
+   OUR STORY — STYLE.CSS
+   PORTRAIT BOOK DIMENSIONS
 ===================================================== */
 
 * {
@@ -11,13 +13,10 @@
 :root {
     --green: #0b2418;
     --deep-green: #06140d;
-
     --gold: #c8a04b;
     --gold-light: #e5ca82;
-
     --cream: #f3ead6;
     --cream-shadow: #dfd0b1;
-
     --brown: #473522;
 }
 
@@ -39,7 +38,6 @@ body {
         );
 
     font-family: "Cormorant Garamond", serif;
-
     color: var(--brown);
 }
 
@@ -55,7 +53,6 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-
     flex-direction: column;
 
     perspective: 2000px;
@@ -79,13 +76,13 @@ body {
 .cover {
     position: relative;
 
+    /* ORIGINAL COVER SIZE */
     width: min(42vw, 540px);
     height: min(80vh, 780px);
 
     cursor: pointer;
 
     transform-style: preserve-3d;
-
     transform-origin: left center;
 
     transition:
@@ -112,7 +109,6 @@ body {
     display: block;
 
     user-select: none;
-
     -webkit-user-drag: none;
 
     filter:
@@ -123,7 +119,6 @@ body {
 
 .cover-glow {
     position: absolute;
-
     inset: 8%;
 
     pointer-events: none;
@@ -187,12 +182,10 @@ body {
 
 .open-hint span {
     color: var(--gold);
-
     margin: 0 10px;
 }
 
 @keyframes hintPulse {
-
     0%,
     100% {
         opacity: .6;
@@ -210,14 +203,11 @@ body {
 
 .book-scene {
     position: fixed;
-
     inset: 0;
 
     display: flex;
-
     align-items: center;
     justify-content: center;
-
     flex-direction: column;
 
     perspective: 2400px;
@@ -229,7 +219,6 @@ body {
 
 .book-scene.hidden {
     opacity: 0;
-
     pointer-events: none;
 }
 
@@ -238,11 +227,29 @@ body {
    BOOK
 ===================================================== */
 
+/*
+   IMPORTANT:
+
+   The old book was extremely wide.
+
+   The new dimensions deliberately make
+   the opened book taller and narrower,
+   matching the proportions of the original
+   portrait cover.
+
+   The opened book is approximately:
+   2 × the width of one closed cover
+   with the same vertical proportion.
+*/
+
 .book {
     position: relative;
 
-    width: min(88vw, 1250px);
-    height: min(72vh, 760px);
+    width: min(84vw, 1080px);
+    height: min(76vh, 780px);
+
+    max-width: 1080px;
+    min-height: 420px;
 
     transform-style: preserve-3d;
 
@@ -250,6 +257,16 @@ body {
         drop-shadow(
             0 30px 30px rgba(0, 0, 0, .6)
         );
+}
+
+
+/* =====================================================
+   PASSWORD BOOK
+===================================================== */
+
+.password-book {
+    width: min(84vw, 1080px);
+    height: min(76vh, 780px);
 }
 
 
@@ -313,7 +330,6 @@ body {
     content: "";
 
     position: absolute;
-
     inset: 0;
 
     pointer-events: none;
@@ -341,11 +357,10 @@ body {
     height: 100%;
 
     display: flex;
-
     align-items: center;
     justify-content: center;
 
-    padding: 8%;
+    padding: 10% 9%;
 
     text-align: center;
 }
@@ -396,31 +411,33 @@ body {
     font-size: 48px;
 
     opacity: .85;
+
+    z-index: 3;
 }
 
 .floral-tl {
-    top: 18px;
+    top: 20px;
     left: 22px;
 
     transform: rotate(-25deg);
 }
 
 .floral-tr {
-    top: 18px;
+    top: 20px;
     right: 22px;
 
     transform: rotate(25deg);
 }
 
 .floral-bl {
-    bottom: 18px;
+    bottom: 20px;
     left: 22px;
 
     transform: rotate(-155deg);
 }
 
 .floral-br {
-    bottom: 18px;
+    bottom: 20px;
     right: 22px;
 
     transform: rotate(155deg);
@@ -438,9 +455,11 @@ body {
 
     letter-spacing: 2px;
 
-    font-size: clamp(14px, 1.3vw, 20px);
+    font-size: clamp(13px, 1.2vw, 18px);
 
-    margin-bottom: 15px;
+    margin-bottom: 12px;
+
+    line-height: 1.2;
 }
 
 h1,
@@ -450,20 +469,22 @@ h2 {
     font-weight: 400;
 
     color: #49361f;
+
+    line-height: 1.05;
 }
 
 h1 {
-    font-size: clamp(52px, 5vw, 80px);
+    font-size: clamp(48px, 5vw, 80px);
 }
 
 h2 {
-    font-size: clamp(38px, 4vw, 62px);
+    font-size: clamp(36px, 4vw, 62px);
 }
 
 p {
-    font-size: clamp(18px, 1.5vw, 24px);
+    font-size: clamp(17px, 1.4vw, 23px);
 
-    line-height: 1.55;
+    line-height: 1.5;
 }
 
 
@@ -474,19 +495,19 @@ p {
 .divider {
     color: var(--gold);
 
-    font-size: 23px;
+    font-size: 22px;
 
     letter-spacing: 5px;
 
-    margin: 13px 0 20px;
+    margin: 11px 0 17px;
 }
 
 .heart {
     color: var(--gold);
 
-    font-size: 35px;
+    font-size: 34px;
 
-    margin-top: 20px;
+    margin-top: 17px;
 }
 
 
@@ -495,27 +516,31 @@ p {
 ===================================================== */
 
 .password-content {
-    width: 80%;
+    width: 82%;
 
     max-width: 430px;
+    max-height: 90%;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .password-content > p {
-    margin-bottom: 25px;
+    margin-bottom: 22px;
 }
 
 .password-form {
     display: flex;
-
     flex-direction: column;
 
-    gap: 13px;
+    gap: 12px;
 }
 
 .password-form input {
     width: 100%;
 
-    padding: 14px 18px;
+    padding: 13px 18px;
 
     border-radius: 5px;
 
@@ -529,7 +554,7 @@ p {
 
     font-family: "Cormorant Garamond", serif;
 
-    font-size: 19px;
+    font-size: 18px;
 
     outline: none;
 }
@@ -542,7 +567,7 @@ p {
 }
 
 .password-form button {
-    padding: 14px 20px;
+    padding: 13px 20px;
 
     border: 1px solid #9c7b35;
 
@@ -559,7 +584,7 @@ p {
 
     font-family: "Cormorant Garamond", serif;
 
-    font-size: 19px;
+    font-size: 18px;
 
     letter-spacing: 1px;
 
@@ -582,7 +607,7 @@ p {
 
     color: #8b352b;
 
-    font-size: 16px;
+    font-size: 15px;
 }
 
 #passwordError.show {
@@ -592,7 +617,6 @@ p {
 }
 
 @keyframes shake {
-
     0%,
     100% {
         transform: translateX(0);
@@ -617,12 +641,9 @@ p {
 }
 
 
-/*
-    EVERY PAGE IS ITS OWN SHEET.
-
-    Pages sit in the centre/right half of
-    the book and rotate around the centre spine.
-*/
+/* =====================================================
+   INDIVIDUAL PHYSICAL PAGE
+===================================================== */
 
 .page {
     position: absolute;
@@ -646,9 +667,9 @@ p {
 }
 
 
-/*
-    NORMAL PAGE
-*/
+/* =====================================================
+   PAGE FACE
+===================================================== */
 
 .page-face {
     position: absolute;
@@ -674,9 +695,9 @@ p {
 }
 
 
-/*
-    FRONT OF A PAGE
-*/
+/* =====================================================
+   FRONT OF PAGE
+===================================================== */
 
 .page-front {
     border-radius: 0 10px 10px 0;
@@ -687,11 +708,9 @@ p {
 }
 
 
-/*
-    BACK OF A PAGE
-
-    This is the LEFT side after the sheet flips.
-*/
+/* =====================================================
+   BACK OF PAGE
+===================================================== */
 
 .page-back {
     transform: rotateY(180deg);
@@ -704,11 +723,9 @@ p {
 }
 
 
-/*
-    TURNED PAGE
-
-    The whole individual sheet rotates.
-*/
+/* =====================================================
+   FLIPPED PAGE
+===================================================== */
 
 .page.flipped {
     transform: rotateY(-180deg);
@@ -716,7 +733,7 @@ p {
 
 
 /* =====================================================
-   PAGE CONTENT
+   SCRAPBOOK CONTENT
 ===================================================== */
 
 .scrap-content {
@@ -724,7 +741,11 @@ p {
 
     inset: 0;
 
-    padding: 8%;
+    /*
+        Extra vertical breathing room
+        keeps the top text visible.
+    */
+    padding: 8% 9% 10%;
 
     display: flex;
 
@@ -736,20 +757,26 @@ p {
     text-align: center;
 
     z-index: 2;
+
+    overflow: hidden;
 }
 
 .scrap-content h3 {
     font-family: "Great Vibes", cursive;
 
-    font-size: clamp(38px, 4vw, 60px);
+    font-size: clamp(34px, 3.5vw, 56px);
 
     font-weight: 400;
 
     color: #49361f;
+
+    line-height: 1.05;
+
+    margin: 0;
 }
 
 .scrap-content .eyebrow {
-    margin-bottom: 8px;
+    margin-bottom: 6px;
 }
 
 
@@ -758,18 +785,18 @@ p {
 ===================================================== */
 
 .photo-placeholder {
-    width: min(220px, 65%);
+    width: min(190px, 68%);
 
     aspect-ratio: 4 / 5;
 
-    margin: 12px auto;
+    margin: 10px auto;
 
     display: flex;
 
     align-items: center;
     justify-content: center;
 
-    border: 10px solid #f8f1e4;
+    border: 9px solid #f8f1e4;
 
     background:
         linear-gradient(
@@ -783,29 +810,47 @@ p {
 
     color: #8c7b5f;
 
-    font-size: 14px;
+    font-size: 13px;
 
     letter-spacing: 2px;
 
     transform: rotate(-2deg);
+
+    flex-shrink: 1;
 }
+
+
+/* =====================================================
+   DATE
+===================================================== */
 
 .scrap-date {
     color: #80652e;
 
-    font-size: 17px;
+    font-size: 16px;
 
     font-style: italic;
 
-    margin: 3px 0 10px;
+    margin: 2px 0 8px;
+
+    line-height: 1.2;
 }
 
+
+/* =====================================================
+   SCRAPBOOK TEXT
+===================================================== */
+
 .scrap-text {
-    max-width: 330px;
+    max-width: 300px;
 
-    font-size: 19px;
+    font-size: 18px;
 
-    line-height: 1.5;
+    line-height: 1.45;
+
+    max-height: 18%;
+
+    overflow: hidden;
 }
 
 
@@ -816,12 +861,12 @@ p {
 .page-number {
     position: absolute;
 
-    right: 25px;
-    bottom: 18px;
+    right: 22px;
+    bottom: 17px;
 
     color: #94763a;
 
-    font-size: 15px;
+    font-size: 14px;
 
     letter-spacing: 2px;
 }
@@ -950,7 +995,33 @@ p {
 
 
 /* =====================================================
-   RESPONSIVE
+   TABLET
+===================================================== */
+
+@media (max-width: 1000px) {
+
+    .book {
+        width: 90vw;
+        height: min(72vh, 700px);
+    }
+
+    .password-book {
+        width: 90vw;
+        height: min(72vh, 700px);
+    }
+
+    .scrap-content {
+        padding: 8% 8% 10%;
+    }
+
+    .photo-placeholder {
+        width: min(175px, 65%);
+    }
+}
+
+
+/* =====================================================
+   MOBILE
 ===================================================== */
 
 @media (max-width: 800px) {
@@ -962,11 +1033,49 @@ p {
 
     .book {
         width: 94vw;
-        height: 62vh;
+        height: 70vh;
+
+        min-height: 400px;
+    }
+
+    .password-book {
+        width: 94vw;
+        height: 70vh;
     }
 
     .floral {
         font-size: 34px;
+    }
+
+    .floral-tl,
+    .floral-tr {
+        top: 14px;
+    }
+
+    .floral-bl,
+    .floral-br {
+        bottom: 14px;
+    }
+
+    .scrap-content {
+        padding: 7% 7% 9%;
+    }
+
+    .scrap-content h3 {
+        font-size: clamp(30px, 7vw, 46px);
+    }
+
+    .photo-placeholder {
+        width: min(150px, 68%);
+        border-width: 7px;
+    }
+
+    .scrap-date {
+        font-size: 14px;
+    }
+
+    .scrap-text {
+        font-size: 16px;
     }
 
     .book-navigation {
@@ -974,13 +1083,82 @@ p {
     }
 }
 
-@media (max-height: 650px) {
+
+/* =====================================================
+   SHORT SCREENS
+===================================================== */
+
+@media (max-height: 700px) {
 
     .book {
-        height: 69vh;
+        height: 68vh;
+    }
+
+    .password-book {
+        height: 68vh;
+    }
+
+    .scrap-content {
+        padding-top: 7%;
+        padding-bottom: 8%;
+    }
+
+    .photo-placeholder {
+        width: min(160px, 62%);
+        margin: 7px auto;
+    }
+
+    .divider {
+        margin: 7px 0 11px;
+    }
+
+    .heart {
+        margin-top: 10px;
     }
 
     .book-navigation {
         bottom: 12px;
     }
 }
+
+
+/* =====================================================
+   VERY SHORT SCREENS
+===================================================== */
+
+@media (max-height: 580px) {
+
+    .book {
+        height: 72vh;
+    }
+
+    .password-book {
+        height: 72vh;
+    }
+
+    .scrap-content {
+        padding: 5% 7%;
+    }
+
+    .photo-placeholder {
+        width: min(125px, 55%);
+        margin: 5px auto;
+    }
+
+    .scrap-content h3 {
+        font-size: clamp(27px, 4vw, 40px);
+    }
+
+    .scrap-date {
+        font-size: 13px;
+    }
+
+    .scrap-text {
+        font-size: 14px;
+    }
+
+    .floral {
+        font-size: 28px;
+    }
+}
+```
