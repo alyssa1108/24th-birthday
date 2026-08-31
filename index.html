@@ -1,58 +1,115 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
     <title>Our Story</title>
 
+
+    <!-- GOOGLE FONTS -->
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Great+Vibes&display=swap" rel="stylesheet">
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
 
-    <link rel="stylesheet" href="style.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Great+Vibes&display=swap"
+        rel="stylesheet"
+    >
+
+
+    <!-- MAIN CSS -->
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+
 </head>
+
 
 <body>
 
-    <!-- =========================================
-         CLOSED BOOK
-    ========================================== -->
 
-    <div id="closedBook" class="closed-book">
+    <!-- =================================================
+         CLOSED GREEN BOOK COVER
+    ================================================== -->
+
+    <div
+        id="closedBook"
+        class="closed-book"
+    >
 
         <div class="book-shadow"></div>
 
-        <div id="cover" class="cover">
-            <img src="cover.png" alt="Our Story book cover">
+
+        <div
+            id="cover"
+            class="cover"
+        >
+
+            <img
+                src="cover.png"
+                alt="Our Story book cover"
+            >
 
             <div class="cover-glow"></div>
+
         </div>
 
+
         <div class="open-hint">
+
             <span>✦</span>
+
             Click the book to open
+
             <span>✦</span>
+
         </div>
 
     </div>
 
 
-    <!-- =========================================
-         PASSWORD BOOK
-         THIS IS A SEPARATE SPREAD
-    ========================================== -->
 
-    <div id="passwordScene" class="book-scene hidden">
+    <!-- =================================================
+         PASSWORD BOOK
+    ================================================== -->
+
+    <div
+        id="passwordScene"
+        class="book-scene hidden"
+    >
 
         <div class="book password-book">
 
+
+            <!-- LEFT PASSWORD PAGE -->
+
             <div class="paper left-paper">
+
                 <div class="paper-content">
 
-                    <div class="floral floral-tl">❦</div>
-                    <div class="floral floral-br">❦</div>
+                    <div class="floral floral-tl">
+                        ❦
+                    </div>
+
+                    <div class="floral floral-br">
+                        ❦
+                    </div>
+
 
                     <div class="intro-content">
 
@@ -60,30 +117,49 @@
                             A little something
                         </div>
 
-                        <h1>Our Story</h1>
+
+                        <h1>
+                            Our Story
+                        </h1>
+
 
                         <div class="divider">
                             ❧ ❦ ❧
                         </div>
+
 
                         <p>
                             Every beautiful story deserves
                             a place to be remembered.
                         </p>
 
-                        <div class="heart">♡</div>
+
+                        <div class="heart">
+                            ♡
+                        </div>
 
                     </div>
 
                 </div>
+
             </div>
 
 
+
+            <!-- RIGHT PASSWORD PAGE -->
+
             <div class="paper right-paper">
+
                 <div class="paper-content">
 
-                    <div class="floral floral-tr">❦</div>
-                    <div class="floral floral-bl">❦</div>
+                    <div class="floral floral-tr">
+                        ❦
+                    </div>
+
+                    <div class="floral floral-bl">
+                        ❦
+                    </div>
+
 
                     <div class="password-content">
 
@@ -91,16 +167,22 @@
                             A private little world
                         </div>
 
-                        <h2>Enter the Password</h2>
+
+                        <h2>
+                            Enter the Password
+                        </h2>
+
 
                         <div class="divider">
                             ❧ ❦ ❧
                         </div>
 
+
                         <p>
                             Some memories are meant
                             only for the two of us.
                         </p>
+
 
                         <div class="password-form">
 
@@ -111,9 +193,14 @@
                                 autocomplete="off"
                             >
 
-                            <button id="unlockButton">
+
+                            <button
+                                id="unlockButton"
+                                type="button"
+                            >
                                 Open Our Story
                             </button>
+
 
                             <div id="passwordError">
                                 That isn't quite right, my love.
@@ -121,11 +208,15 @@
 
                         </div>
 
-                        <div class="heart">♡</div>
+
+                        <div class="heart">
+                            ♡
+                        </div>
 
                     </div>
 
                 </div>
+
             </div>
 
         </div>
@@ -133,51 +224,82 @@
     </div>
 
 
-    <!-- =========================================
+
+    <!-- =================================================
          ACTUAL SCRAPBOOK
-         PASSWORD PAGE DOES NOT EXIST HERE
-    ========================================== -->
+    ================================================== -->
 
-    <div id="scrapbookScene" class="book-scene hidden">
+    <div
+        id="scrapbookScene"
+        class="book-scene hidden"
+    >
 
-        <div id="book" class="book scrapbook-book">
+        <div
+            id="book"
+            class="book scrapbook-book"
+        >
 
-            <!-- The page sheets are created by JavaScript -->
+            <!--
 
-            <div id="leftStack" class="page-stack left-stack"></div>
+                JavaScript creates ALL physical
+                scrapbook sheets here.
 
-            <div id="rightStack" class="page-stack right-stack"></div>
+            -->
+
+            <div
+                id="leftStack"
+                class="page-stack left-stack"
+            ></div>
+
+
+            <div
+                id="rightStack"
+                class="page-stack right-stack"
+            ></div>
+
 
             <div id="pages"></div>
 
         </div>
 
 
-        <!-- NAVIGATION -->
+
+        <!-- =================================================
+             NAVIGATION
+        ================================================== -->
 
         <div class="book-navigation">
+
 
             <button
                 id="previousButton"
                 class="nav-button"
+                type="button"
                 aria-label="Previous page"
             >
                 ‹
             </button>
 
-            <div id="pageCounter" class="page-counter">
-                1 / 10
+
+            <div
+                id="pageCounter"
+                class="page-counter"
+            >
+                1–2 / 10
             </div>
+
 
             <button
                 id="nextButton"
                 class="nav-button"
+                type="button"
                 aria-label="Next page"
             >
                 ›
             </button>
 
         </div>
+
 
         <div class="navigation-hint">
             Click the arrows to turn the pages
@@ -186,7 +308,14 @@
     </div>
 
 
+
+    <!-- =================================================
+         JAVASCRIPT
+    ================================================== -->
+
     <script src="script.js"></script>
 
 </body>
+
 </html>
+```
