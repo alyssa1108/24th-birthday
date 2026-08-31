@@ -1,6 +1,7 @@
+```javascript
 /* =====================================================
    OUR STORY
-   REAL PAGE-STACK BOOK ENGINE
+   PHYSICAL PAGE-STACK BOOK ENGINE
 ===================================================== */
 
 
@@ -10,57 +11,54 @@
 
 const PASSWORD = "JoashManicum";
 
-/*
-    Number of scrapbook sheets.
-
-    Each sheet has TWO sides:
-
-    Sheet 1:
-        front = page 1
-        back  = page 2
-
-    Sheet 2:
-        front = page 3
-        back  = page 4
-
-    etc.
-
-    We currently have 10 visible scrapbook pages.
-    We can change this later when we add your photos.
-*/
-
 const TOTAL_PAGES = 10;
+
+const TOTAL_SHEETS =
+    Math.ceil(TOTAL_PAGES / 2);
 
 
 /* =====================================================
    ELEMENTS
 ===================================================== */
 
-const closedBook = document.getElementById("closedBook");
+const closedBook =
+    document.getElementById("closedBook");
 
-const cover = document.getElementById("cover");
+const cover =
+    document.getElementById("cover");
 
-const passwordScene = document.getElementById("passwordScene");
+const passwordScene =
+    document.getElementById("passwordScene");
 
-const scrapbookScene = document.getElementById("scrapbookScene");
+const scrapbookScene =
+    document.getElementById("scrapbookScene");
 
-const passwordInput = document.getElementById("passwordInput");
+const passwordInput =
+    document.getElementById("passwordInput");
 
-const unlockButton = document.getElementById("unlockButton");
+const unlockButton =
+    document.getElementById("unlockButton");
 
-const passwordError = document.getElementById("passwordError");
+const passwordError =
+    document.getElementById("passwordError");
 
-const pagesContainer = document.getElementById("pages");
+const pagesContainer =
+    document.getElementById("pages");
 
-const leftStack = document.getElementById("leftStack");
+const leftStack =
+    document.getElementById("leftStack");
 
-const rightStack = document.getElementById("rightStack");
+const rightStack =
+    document.getElementById("rightStack");
 
-const previousButton = document.getElementById("previousButton");
+const previousButton =
+    document.getElementById("previousButton");
 
-const nextButton = document.getElementById("nextButton");
+const nextButton =
+    document.getElementById("nextButton");
 
-const pageCounter = document.getElementById("pageCounter");
+const pageCounter =
+    document.getElementById("pageCounter");
 
 
 /* =====================================================
@@ -75,49 +73,45 @@ let turning = false;
 
 
 /*
-    currentSheet tells us which SPREAD we are viewing.
+    currentSheet:
 
-    0 = first spread
-    1 = second spread
-    2 = third spread
-    etc.
+    0 = 1–2
+    1 = 3–4
+    2 = 5–6
+    3 = 7–8
+    4 = 9–10
 */
-
-
-const TOTAL_SHEETS = Math.ceil(TOTAL_PAGES / 2);
 
 
 /* =====================================================
    OPEN COVER
 ===================================================== */
 
-cover.addEventListener("click", openCover);
+cover.addEventListener(
+    "click",
+    openCover
+);
 
 
 function openCover() {
 
-    if (cover.classList.contains("opening")) {
+    if (
+        cover.classList.contains("opening")
+    ) {
         return;
     }
 
     cover.classList.add("opening");
 
 
-    /*
-        Wait for the physical cover animation.
-    */
-
     setTimeout(() => {
 
         closedBook.classList.add("hidden");
 
-        passwordScene.classList.remove("hidden");
+        passwordScene.classList.remove(
+            "hidden"
+        );
 
-
-        /*
-            Let the password scene appear first,
-            THEN focus the input.
-        */
 
         setTimeout(() => {
 
@@ -156,58 +150,47 @@ passwordInput.addEventListener(
 
 function unlockBook() {
 
-    const entered = passwordInput.value;
+    const entered =
+        passwordInput.value;
 
 
     if (entered !== PASSWORD) {
 
-        passwordError.classList.remove("show");
-
-        /*
-            Restart CSS animation.
-        */
+        passwordError.classList.remove(
+            "show"
+        );
 
         void passwordError.offsetWidth;
 
-        passwordError.classList.add("show");
+        passwordError.classList.add(
+            "show"
+        );
 
         passwordInput.value = "";
 
         passwordInput.focus();
 
         return;
+
     }
 
-
-    /*
-        PASSWORD CORRECT
-    */
 
     unlocked = true;
 
 
-    /*
-        Completely remove the password spread
-        from the visual flow.
+    passwordScene.classList.add(
+        "hidden"
+    );
 
-        It will NEVER sit underneath
-        the scrapbook.
-    */
-
-    passwordScene.classList.add("hidden");
-
-
-    /*
-        Build the actual scrapbook BEFORE
-        showing it.
-    */
 
     buildBook();
 
 
     setTimeout(() => {
 
-        scrapbookScene.classList.remove("hidden");
+        scrapbookScene.classList.remove(
+            "hidden"
+        );
 
         updateNavigation();
 
@@ -217,7 +200,7 @@ function unlockBook() {
 
 
 /* =====================================================
-   BUILD THE ENTIRE BOOK
+   BUILD BOOK
 ===================================================== */
 
 function buildBook() {
@@ -226,11 +209,8 @@ function buildBook() {
 
 
     /*
-        Create every physical sheet now.
-
-        We do NOT create pages during navigation.
-
-        This is what prevents the merging problem.
+        Create every physical sheet
+        BEFORE any page is turned.
     */
 
     for (
@@ -239,12 +219,15 @@ function buildBook() {
         sheetNumber++
     ) {
 
-        const sheet = createSheet(sheetNumber);
+        const sheet =
+            createSheet(sheetNumber);
 
         pagesContainer.appendChild(sheet);
 
     }
 
+
+    updateSheetLayers();
 
     updateStacks();
 
@@ -252,38 +235,20 @@ function buildBook() {
 
 
 /* =====================================================
-   CREATE ONE PHYSICAL SHEET
+   CREATE PHYSICAL SHEET
 ===================================================== */
 
 function createSheet(sheetNumber) {
 
-    const page = document.createElement("div");
+    const sheet =
+        document.createElement("div");
 
-    page.className = "page";
-
-    /*
-        Higher pages sit above lower pages.
-    */
-
-    page.style.setProperty(
-        "--page-z",
-        TOTAL_SHEETS - sheetNumber
-    );
+    sheet.className = "page";
 
 
-    /*
-        Page numbers.
+    sheet.dataset.sheet =
+        sheetNumber;
 
-        Sheet 0:
-            front = 1
-            back = 2
-
-        Sheet 1:
-            front = 3
-            back = 4
-
-        etc.
-    */
 
     const frontNumber =
         sheetNumber * 2 + 1;
@@ -292,27 +257,26 @@ function createSheet(sheetNumber) {
         sheetNumber * 2 + 2;
 
 
-    const front = document.createElement("div");
+    const front =
+        document.createElement("div");
 
     front.className =
         "page-face page-front";
-
 
     front.innerHTML =
         createPageContent(frontNumber);
 
 
-    const back = document.createElement("div");
+    const back =
+        document.createElement("div");
 
     back.className =
         "page-face page-back";
 
 
-    /*
-        Don't create a fake page beyond TOTAL_PAGES.
-    */
-
-    if (backNumber <= TOTAL_PAGES) {
+    if (
+        backNumber <= TOTAL_PAGES
+    ) {
 
         back.innerHTML =
             createPageContent(backNumber);
@@ -320,33 +284,44 @@ function createSheet(sheetNumber) {
     }
 
 
-    page.appendChild(front);
+    sheet.appendChild(front);
 
-    page.appendChild(back);
+    sheet.appendChild(back);
 
 
-    return page;
+    return sheet;
 
 }
 
 
 /* =====================================================
-   PAGE DESIGN
+   PAGE CONTENT
 ===================================================== */
 
 function createPageContent(pageNumber) {
 
     const pageTitles = [
+
         "Our Beginning",
+
         "The Little Things",
+
         "Favourite Memories",
+
         "Adventures Together",
+
         "Just Us",
+
         "The Moments I Keep",
+
         "Through It All",
+
         "My Favourite Person",
+
         "You & Me",
+
         "Forever & Always"
+
     ];
 
 
@@ -392,9 +367,7 @@ function createPageContent(pageNumber) {
 
 
             <div class="photo-placeholder">
-
                 PHOTO ${pageNumber}
-
             </div>
 
 
@@ -425,6 +398,55 @@ function createPageContent(pageNumber) {
 
 
 /* =====================================================
+   IMPORTANT:
+   SHEET LAYERING
+===================================================== */
+
+function updateSheetLayers() {
+
+    const sheets =
+        pagesContainer.querySelectorAll(
+            ".page"
+        );
+
+
+    sheets.forEach(
+        (sheet, index) => {
+
+            /*
+                Already-flipped sheets
+                sit behind the active sheet.
+            */
+
+            if (index < currentSheet) {
+
+                sheet.style.zIndex =
+                    10 + index;
+
+            }
+
+            /*
+                Unflipped sheets.
+
+                The next sheet gets the
+                highest available z-index.
+            */
+
+            else {
+
+                sheet.style.zIndex =
+                    100 +
+                    (TOTAL_SHEETS - index);
+
+            }
+
+        }
+    );
+
+}
+
+
+/* =====================================================
    NEXT
 ===================================================== */
 
@@ -436,49 +458,60 @@ nextButton.addEventListener(
 
 function nextSpread() {
 
-    if (!unlocked || turning) {
+    if (
+        !unlocked ||
+        turning
+    ) {
         return;
     }
 
 
-    if (currentSheet >= TOTAL_SHEETS - 1) {
-
+    if (
+        currentSheet >=
+        TOTAL_SHEETS - 1
+    ) {
         return;
-
     }
 
 
     turning = true;
 
 
-    /*
-        The current top sheet flips.
-
-        Because ALL sheets already exist,
-        this is a real individual sheet.
-    */
-
     const sheets =
-        pagesContainer.querySelectorAll(".page");
+        pagesContainer.querySelectorAll(
+            ".page"
+        );
 
 
     const sheet =
         sheets[currentSheet];
 
 
-    sheet.classList.add("flipped");
-
-
     /*
-        Move to the next spread.
+        Put the turning sheet above
+        everything while it rotates.
     */
+
+    sheet.style.zIndex = 1000;
+
+
+    sheet.classList.add(
+        "flipped"
+    );
+
 
     currentSheet++;
 
 
-    updateStacks();
+    setTimeout(() => {
 
-    updateNavigation();
+        updateSheetLayers();
+
+        updateStacks();
+
+        updateNavigation();
+
+    }, 700);
 
 
     setTimeout(() => {
@@ -502,43 +535,59 @@ previousButton.addEventListener(
 
 function previousSpread() {
 
-    if (!unlocked || turning) {
+    if (
+        !unlocked ||
+        turning
+    ) {
         return;
     }
 
 
-    if (currentSheet <= 0) {
-
+    if (
+        currentSheet <= 0
+    ) {
         return;
-
     }
 
 
     turning = true;
 
 
-    /*
-        The previous physical sheet
-        rotates back.
-    */
+    const sheets =
+        pagesContainer.querySelectorAll(
+            ".page"
+        );
+
 
     currentSheet--;
-
-
-    const sheets =
-        pagesContainer.querySelectorAll(".page");
 
 
     const sheet =
         sheets[currentSheet];
 
 
-    sheet.classList.remove("flipped");
+    /*
+        Bring the returning sheet
+        to the front while it turns.
+    */
+
+    sheet.style.zIndex = 1000;
 
 
-    updateStacks();
+    sheet.classList.remove(
+        "flipped"
+    );
 
-    updateNavigation();
+
+    setTimeout(() => {
+
+        updateSheetLayers();
+
+        updateStacks();
+
+        updateNavigation();
+
+    }, 700);
 
 
     setTimeout(() => {
@@ -551,16 +600,19 @@ function previousSpread() {
 
 
 /* =====================================================
-   PAGE STACK VISUALS
+   PAGE STACK THICKNESS
 ===================================================== */
 
 function updateStacks() {
 
     /*
-        LEFT STACK
+        Left:
 
-        The further through the book we go,
-        the thicker the left stack becomes.
+        0 → 0 pages
+        1 → 2 pages
+        2 → 4 pages
+        3 → 6 pages
+        4 → 8 pages
     */
 
     const leftPages =
@@ -568,13 +620,15 @@ function updateStacks() {
 
 
     /*
-        RIGHT STACK
+        Right:
 
-        The remaining sheets become thinner.
+        Remaining sheets.
     */
 
     const rightPages =
-        TOTAL_SHEETS - currentSheet - 1;
+        TOTAL_SHEETS -
+        currentSheet -
+        1;
 
 
     updateStackAppearance(
@@ -594,7 +648,7 @@ function updateStacks() {
 
 
 /* =====================================================
-   STACK THICKNESS
+   STACK APPEARANCE
 ===================================================== */
 
 function updateStackAppearance(
@@ -603,30 +657,37 @@ function updateStackAppearance(
     side
 ) {
 
-    /*
-        Each page adds a tiny amount
-        of visible thickness.
-    */
-
     const thickness =
-        Math.min(pageCount * 1.5, 18);
+        Math.min(
+            pageCount * 1.5,
+            18
+        );
+
+
+    const visibleThickness =
+        Math.max(
+            thickness,
+            3
+        );
 
 
     if (side === "left") {
 
         stack.style.width =
-            `${Math.max(thickness, 3)}px`;
+            `${visibleThickness}px`;
 
         stack.style.left =
-            `${-Math.max(thickness, 3)}px`;
+            `${-visibleThickness}px`;
 
-    } else {
+    }
+
+    else {
 
         stack.style.width =
-            `${Math.max(thickness, 3)}px`;
+            `${visibleThickness}px`;
 
         stack.style.right =
-            `${-Math.max(thickness, 3)}px`;
+            `${-visibleThickness}px`;
 
     }
 
@@ -644,7 +705,8 @@ function updateNavigation() {
 
 
     nextButton.disabled =
-        currentSheet >= TOTAL_SHEETS - 1;
+        currentSheet >=
+        TOTAL_SHEETS - 1;
 
 
     const leftPage =
@@ -677,14 +739,18 @@ document.addEventListener(
         }
 
 
-        if (event.key === "ArrowRight") {
+        if (
+            event.key === "ArrowRight"
+        ) {
 
             nextSpread();
 
         }
 
 
-        if (event.key === "ArrowLeft") {
+        if (
+            event.key === "ArrowLeft"
+        ) {
 
             previousSpread();
 
@@ -692,3 +758,4 @@ document.addEventListener(
 
     }
 );
+```
