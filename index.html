@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Memory Book</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Great+Vibes&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+    <!-- =========================================
+         CLOSED BOOK
+    ========================================== -->
+
+    <div id="closedBook" class="closed-book">
+
+        <div class="book-shadow"></div>
+
+        <div class="cover-container" id="openBookButton">
+
+            <img
+                src="cover.png"
+                alt="Memory Book Cover"
+                class="cover-image"
+            >
+
+            <div class="cover-shine"></div>
+
+        </div>
+
+        <div class="open-hint">
+            <span>✦</span>
+            Click the book to open
+            <span>✦</span>
+        </div>
+
+    </div>
+
+
+    <!-- =========================================
+         OPEN BOOK
+    ========================================== -->
+
+    <main id="bookScene" class="book-scene hidden">
+
+        <div class="book">
+
+            <!-- BACKGROUND / PAGE STACK -->
+            <div class="page-stack left-stack"></div>
+            <div class="page-stack right-stack"></div>
+
+
+            <!-- =================================
+                 LEFT PAGE
+            ================================== -->
+
+            <section class="book-page left-page" id="leftPage">
+
+                <div class="page-content">
+
+                    <div class="ornament top-left">❦</div>
+
+                    <div class="ornament top-right">❦</div>
+
+                    <div class="ornament bottom-left">❦</div>
+
+                    <div class="ornament bottom-right">❦</div>
+
+                    <div id="leftContent">
+                        <div class="welcome-page">
+
+                            <div class="small-title">
+                                A little something
+                            </div>
+
+                            <h1>
+                                Our Story
+                            </h1>
+
+                            <div class="gold-divider">
+                                ❧ ❦ ❧
+                            </div>
+
+                            <p>
+                                Every beautiful story deserves
+                                a place to be remembered.
+                            </p>
+
+                            <div class="heart">
+                                ♡
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================
+                 RIGHT PAGE
+            ================================== -->
+
+            <section class="book-page right-page" id="rightPage">
+
+                <div class="page-content">
+
+                    <div class="ornament top-left">❦</div>
+
+                    <div class="ornament top-right">❦</div>
+
+                    <div class="ornament bottom-left">❦</div>
+
+                    <div class="ornament bottom-right">❦</div>
+
+
+                    <!-- PASSWORD -->
+                    <div id="passwordPage" class="password-page">
+
+                        <div class="small-title">
+                            A private little world
+                        </div>
+
+                        <h2>
+                            Enter the Password
+                        </h2>
+
+                        <div class="gold-divider">
+                            ❧ ❦ ❧
+                        </div>
+
+                        <p class="password-message">
+                            Some memories are meant
+                            only for the two of us.
+                        </p>
+
+                        <div class="password-box">
+
+                            <input
+                                type="password"
+                                id="passwordInput"
+                                placeholder="Enter password"
+                                autocomplete="off"
+                            >
+
+                            <button id="unlockButton">
+                                Open Our Story
+                            </button>
+
+                            <p id="passwordError" class="password-error">
+                                That isn't quite right, my love.
+                            </p>
+
+                        </div>
+
+                        <div class="heart">
+                            ♡
+                        </div>
+
+                    </div>
+
+
+                    <!-- PLACEHOLDER SCRAPBOOK CONTENT -->
+
+                    <div id="scrapbookContent" class="scrapbook-page hidden">
+
+                        <div class="page-number">
+                            01
+                        </div>
+
+                        <h2>
+                            Our Beginning
+                        </h2>
+
+                        <div class="gold-divider">
+                            ❧ ❦ ❧
+                        </div>
+
+                        <div class="photo-placeholder">
+                            <span>YOUR PHOTO</span>
+                        </div>
+
+                        <div class="date-placeholder">
+                            Add your date here
+                        </div>
+
+                        <p>
+                            This is where your first memory,
+                            photograph and story will go.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================
+                 FLIPPING PAGES
+            ================================== -->
+
+            <div id="flipContainer"></div>
+
+        </div>
+
+
+        <!-- =====================================
+             NAVIGATION
+        ====================================== -->
+
+        <div class="book-navigation">
+
+            <button
+                id="previousButton"
+                class="nav-button"
+                disabled
+            >
+                ‹
+            </button>
+
+            <div class="page-counter" id="pageCounter">
+                Password
+            </div>
+
+            <button
+                id="nextButton"
+                class="nav-button"
+            >
+                ›
+            </button>
+
+        </div>
+
+        <div class="navigation-hint">
+            <span>Click the arrows to turn the pages</span>
+        </div>
+
+    </main>
+
+
+    <script src="script.js"></script>
+
+</body>
+</html>
