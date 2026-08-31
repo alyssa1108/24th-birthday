@@ -1,7 +1,7 @@
 ```css
 /* =====================================================
    OUR STORY — STYLE.CSS
-   PORTRAIT BOOK DIMENSIONS
+   SLIMMER PHYSICAL BOOK
 ===================================================== */
 
 * {
@@ -13,10 +13,13 @@
 :root {
     --green: #0b2418;
     --deep-green: #06140d;
+
     --gold: #c8a04b;
     --gold-light: #e5ca82;
+
     --cream: #f3ead6;
     --cream-shadow: #dfd0b1;
+
     --brown: #473522;
 }
 
@@ -38,6 +41,7 @@ body {
         );
 
     font-family: "Cormorant Garamond", serif;
+
     color: var(--brown);
 }
 
@@ -53,6 +57,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
+
     flex-direction: column;
 
     perspective: 2000px;
@@ -70,19 +75,19 @@ body {
 
 
 /* =====================================================
-   COVER
+   ORIGINAL COVER
 ===================================================== */
 
 .cover {
     position: relative;
 
-    /* ORIGINAL COVER SIZE */
     width: min(42vw, 540px);
     height: min(80vh, 780px);
 
     cursor: pointer;
 
     transform-style: preserve-3d;
+
     transform-origin: left center;
 
     transition:
@@ -109,6 +114,7 @@ body {
     display: block;
 
     user-select: none;
+
     -webkit-user-drag: none;
 
     filter:
@@ -119,6 +125,7 @@ body {
 
 .cover-glow {
     position: absolute;
+
     inset: 8%;
 
     pointer-events: none;
@@ -182,10 +189,12 @@ body {
 
 .open-hint span {
     color: var(--gold);
+
     margin: 0 10px;
 }
 
 @keyframes hintPulse {
+
     0%,
     100% {
         opacity: .6;
@@ -203,11 +212,14 @@ body {
 
 .book-scene {
     position: fixed;
+
     inset: 0;
 
     display: flex;
+
     align-items: center;
     justify-content: center;
+
     flex-direction: column;
 
     perspective: 2400px;
@@ -219,36 +231,64 @@ body {
 
 .book-scene.hidden {
     opacity: 0;
+
     pointer-events: none;
 }
 
 
 /* =====================================================
-   BOOK
+   THE PHYSICAL BOOK
 ===================================================== */
 
 /*
-   IMPORTANT:
+    THIS IS THE MAIN CHANGE.
 
-   The old book was extremely wide.
+    The book is intentionally SLIMMER.
 
-   The new dimensions deliberately make
-   the opened book taller and narrower,
-   matching the proportions of the original
-   portrait cover.
+    The height stays tall.
 
-   The opened book is approximately:
-   2 × the width of one closed cover
-   with the same vertical proportion.
+    The width is now based much more closely
+    on the original portrait cover.
+
+    Think:
+
+        CLOSED COVER
+
+             ┌──────┐
+             │      │
+             │      │
+             │      │
+             │      │
+             └──────┘
+
+        OPEN BOOK
+
+        ┌──────┬──────┐
+        │      │      │
+        │      │      │
+        │      │      │
+        │      │      │
+        └──────┴──────┘
+
+    Each page is essentially one
+    portrait cover-width.
 */
 
 .book {
     position: relative;
 
-    width: min(84vw, 1080px);
+    /*
+        SLIMMER WIDTH
+    */
+    width: min(70vw, 900px);
+
+    /*
+        KEEP THE HEIGHT YOU LIKED
+    */
     height: min(76vh, 780px);
 
-    max-width: 1080px;
+    max-width: 900px;
+
     min-height: 420px;
 
     transform-style: preserve-3d;
@@ -265,7 +305,8 @@ body {
 ===================================================== */
 
 .password-book {
-    width: min(84vw, 1080px);
+    width: min(70vw, 900px);
+
     height: min(76vh, 780px);
 }
 
@@ -330,6 +371,7 @@ body {
     content: "";
 
     position: absolute;
+
     inset: 0;
 
     pointer-events: none;
@@ -357,10 +399,11 @@ body {
     height: 100%;
 
     display: flex;
+
     align-items: center;
     justify-content: center;
 
-    padding: 10% 9%;
+    padding: 10% 10%;
 
     text-align: center;
 }
@@ -518,11 +561,14 @@ p {
 .password-content {
     width: 82%;
 
-    max-width: 430px;
+    max-width: 380px;
+
     max-height: 90%;
 
     display: flex;
+
     flex-direction: column;
+
     justify-content: center;
 }
 
@@ -532,6 +578,7 @@ p {
 
 .password-form {
     display: flex;
+
     flex-direction: column;
 
     gap: 12px;
@@ -617,6 +664,7 @@ p {
 }
 
 @keyframes shake {
+
     0%,
     100% {
         transform: translateX(0);
@@ -668,7 +716,7 @@ p {
 
 
 /* =====================================================
-   PAGE FACE
+   PAGE FACES
 ===================================================== */
 
 .page-face {
@@ -696,7 +744,7 @@ p {
 
 
 /* =====================================================
-   FRONT OF PAGE
+   FRONT
 ===================================================== */
 
 .page-front {
@@ -709,7 +757,7 @@ p {
 
 
 /* =====================================================
-   BACK OF PAGE
+   BACK
 ===================================================== */
 
 .page-back {
@@ -724,7 +772,7 @@ p {
 
 
 /* =====================================================
-   FLIPPED PAGE
+   FLIPPED
 ===================================================== */
 
 .page.flipped {
@@ -741,10 +789,6 @@ p {
 
     inset: 0;
 
-    /*
-        Extra vertical breathing room
-        keeps the top text visible.
-    */
     padding: 8% 9% 10%;
 
     display: flex;
@@ -764,7 +808,7 @@ p {
 .scrap-content h3 {
     font-family: "Great Vibes", cursive;
 
-    font-size: clamp(34px, 3.5vw, 56px);
+    font-size: clamp(32px, 3.5vw, 54px);
 
     font-weight: 400;
 
@@ -781,11 +825,11 @@ p {
 
 
 /* =====================================================
-   PHOTO PLACEHOLDER
+   PHOTO
 ===================================================== */
 
 .photo-placeholder {
-    width: min(190px, 68%);
+    width: min(175px, 67%);
 
     aspect-ratio: 4 / 5;
 
@@ -842,9 +886,9 @@ p {
 ===================================================== */
 
 .scrap-text {
-    max-width: 300px;
+    max-width: 270px;
 
-    font-size: 18px;
+    font-size: 17px;
 
     line-height: 1.45;
 
@@ -861,7 +905,7 @@ p {
 .page-number {
     position: absolute;
 
-    right: 22px;
+    right: 20px;
     bottom: 17px;
 
     color: #94763a;
@@ -1001,12 +1045,12 @@ p {
 @media (max-width: 1000px) {
 
     .book {
-        width: 90vw;
+        width: 76vw;
         height: min(72vh, 700px);
     }
 
     .password-book {
-        width: 90vw;
+        width: 76vw;
         height: min(72vh, 700px);
     }
 
@@ -1015,7 +1059,7 @@ p {
     }
 
     .photo-placeholder {
-        width: min(175px, 65%);
+        width: min(160px, 65%);
     }
 }
 
@@ -1032,14 +1076,14 @@ p {
     }
 
     .book {
-        width: 94vw;
+        width: 92vw;
         height: 70vh;
 
         min-height: 400px;
     }
 
     .password-book {
-        width: 94vw;
+        width: 92vw;
         height: 70vh;
     }
 
@@ -1062,11 +1106,11 @@ p {
     }
 
     .scrap-content h3 {
-        font-size: clamp(30px, 7vw, 46px);
+        font-size: clamp(29px, 7vw, 44px);
     }
 
     .photo-placeholder {
-        width: min(150px, 68%);
+        width: min(145px, 68%);
         border-width: 7px;
     }
 
@@ -1075,7 +1119,7 @@ p {
     }
 
     .scrap-text {
-        font-size: 16px;
+        font-size: 15px;
     }
 
     .book-navigation {
@@ -1104,7 +1148,7 @@ p {
     }
 
     .photo-placeholder {
-        width: min(160px, 62%);
+        width: min(150px, 62%);
         margin: 7px auto;
     }
 
@@ -1141,7 +1185,7 @@ p {
     }
 
     .photo-placeholder {
-        width: min(125px, 55%);
+        width: min(120px, 55%);
         margin: 5px auto;
     }
 
